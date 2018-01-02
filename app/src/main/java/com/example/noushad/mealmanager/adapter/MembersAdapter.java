@@ -1,6 +1,7 @@
 package com.example.noushad.mealmanager.adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -12,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.noushad.mealmanager.R;
 import com.example.noushad.mealmanager.activity.MainActivity;
@@ -185,8 +185,8 @@ public class MembersAdapter extends RecyclerView.Adapter {
             fabInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(mContext, "Info", Toast.LENGTH_SHORT).show();
-
+                    ((MainActivity) mContext).startDetailFragment(pMember.getId());
+                    dialog.dismiss();
                 }
             });
 
@@ -199,9 +199,82 @@ public class MembersAdapter extends RecyclerView.Adapter {
 
         @Override
         public boolean onLongClick(View v) {
-            Toast.makeText(mContext, "On Long Click", Toast.LENGTH_SHORT).show();
-
+            showLongClickDialog(mMember);
             return true;
+        }
+
+        private void showLongClickDialog(final Member pMember) {
+            final AlertDialog.Builder builder;
+            builder = new AlertDialog.Builder(mContext);
+            final AlertDialog dialog = builder.create();
+            dialog.setTitle(mMember.getName().toUpperCase());
+
+            View viewInflated = LayoutInflater.from(mContext).inflate(R.layout.onlongclick_options, null, false);
+            FloatingActionButton fabEdit = viewInflated.findViewById(R.id.fab_edit_user);
+            FloatingActionButton fabDelete = viewInflated.findViewById(R.id.fab_user_delete);
+            final ConstraintLayout optionView = viewInflated.findViewById(R.id.long_options_container);
+            final ConstraintLayout inputView = viewInflated.findViewById(R.id.long_input_container);
+            final EditText infoUpdateInput = viewInflated.findViewById(R.id.info_update_input);
+            final Button infoUpdateButton = viewInflated.findViewById(R.id.info_update_button);
+            final TextView hint = viewInflated.findViewById(R.id.info_hint);
+            fabEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //update user
+                    optionView.setVisibility(View.GONE);
+                    inputView.setVisibility(View.VISIBLE);
+                    hint.setText("NAME");
+                    infoUpdateButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            try {
+                                String name = infoUpdateInput.getText().toString();
+                                pMember.setName(name);
+                                ((MainActivity) mContext).dbUpdateMember(pMember);
+                                notifyDataSetChanged();
+                            } catch (Exception e) {
+
+                            }
+                            dialog.dismiss();
+                        }
+                    });
+                }
+            });
+
+            fabDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //delete user
+                    showDeleteDialog();
+                    dialog.dismiss();
+                }
+            });
+            dialog.setView(viewInflated);
+            dialog.show();
+        }
+
+        private void showDeleteDialog() {
+            final AlertDialog.Builder builder;
+            builder = new AlertDialog.Builder(mContext);
+            final AlertDialog dialog = builder.create();
+            dialog.setTitle("REMOVE USER");
+            dialog.setMessage("You Are Removing " + mMember.getName());
+            dialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ((MainActivity) mContext).dbDeleteMember(mMember);
+                    notifyDataSetChanged();
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "CANCEL", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
         }
     }
 

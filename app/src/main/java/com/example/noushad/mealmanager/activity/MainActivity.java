@@ -8,6 +8,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -24,8 +28,10 @@ import android.widget.TextView;
 import com.example.noushad.mealmanager.R;
 import com.example.noushad.mealmanager.adapter.MembersAdapter;
 import com.example.noushad.mealmanager.event.UpdateEvent;
+import com.example.noushad.mealmanager.fragment.InforamtionFragment;
 import com.example.noushad.mealmanager.model.Member;
 import com.example.noushad.mealmanager.utility.SharedPrefManager;
+import com.example.noushad.mealmanager.utility.TagManager;
 import com.example.noushad.mealmanager.viewmodel.MemberListViewModel;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -48,7 +54,10 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private MembersAdapter mAdapter;
+    private TextView currentMealPrice;
     private FloatingActionButton fab;
+    private FloatingActionButton fabMealInfo;
+    private FloatingActionButton fabExpenseInfo;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -66,6 +75,9 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
+    private int expense;
+    private float meals;
+    private float currentPrice;
 
     private void clearData() {
         SharedPrefManager.getInstance(MainActivity.this).clear();
@@ -81,8 +93,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initializeViews();
         mViewModel = ViewModelProviders.of(this).get(MemberListViewModel.class);
-
-
         showDetails();
     }
 
@@ -125,10 +135,10 @@ public class MainActivity extends AppCompatActivity {
         colors.add(getResources().getColor(R.color.colorBlu1));
         colors.add(getResources().getColor(R.color.colorBlu2));
         colors.add(getResources().getColor(R.color.colorBlu4));
-        colors.add( getResources().getColor(R.color.colorBlu));
-        colors.add( getResources().getColor(R.color.colorBlu1));
-        colors.add( getResources().getColor(R.color.colorBlu2));
-        colors.add( getResources().getColor(R.color.colorBlu4));
+        colors.add(getResources().getColor(R.color.colorBlu));
+        colors.add(getResources().getColor(R.color.colorBlu1));
+        colors.add(getResources().getColor(R.color.colorBlu2));
+        colors.add(getResources().getColor(R.color.colorBlu4));
         colors.add(getResources().getColor(R.color.colorAccent));
         colors.add(getResources().getColor(R.color.colorBlu));
         colors.add(getResources().getColor(R.color.colorBlu1));
@@ -138,9 +148,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showDetails() {
-        int expense = SharedPrefManager.getInstance(this).getTotalExpense();
-        float meals = SharedPrefManager.getInstance(this).getTotalMeals();
-        float currentPrice = SharedPrefManager.getInstance(this).getCurrentMealPrice();
+        expense = SharedPrefManager.getInstance(this).getTotalExpense();
+        meals = SharedPrefManager.getInstance(this).getTotalMeals();
+        currentPrice = SharedPrefManager.getInstance(this).getCurrentMealPrice();
         mTotalExpense.setText(String.valueOf(Math.round(expense)));
         mTotalMeals.setText(String.valueOf(Math.round(meals)));
         mMealPrice.setText(String.valueOf(Math.round(currentPrice)));
@@ -169,6 +179,66 @@ public class MainActivity extends AppCompatActivity {
                 showAddNewDialog();
             }
         });
+        fabMealInfo = findViewById(R.id.floatingActionButton2);
+        fabExpenseInfo = findViewById(R.id.floatingActionButton);
+        currentMealPrice = findViewById(R.id.current_price);
+
+        currentMealPrice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSnack("Current Price Per Meal : ", Math.round(currentPrice));
+            }
+        });
+
+        currentMealPrice.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showClearDialog();
+                return true;
+            }
+        });
+
+
+        fabMealInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSnack("Total Meals : ", Math.round(meals));
+            }
+        });
+
+        fabExpenseInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSnack("Total Expense : ", expense);
+            }
+        });
+    }
+
+    private void showClearDialog() {
+        new AlertDialog.Builder(this)
+                .setMessage("Are you sure you want to ERASE all Data?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        clearData();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void showSnack(String tag, int count) {
+
+        Snackbar.make(this.findViewById(R.id.container), tag + String.valueOf(count), Snackbar.LENGTH_LONG)
+                .setAction("CLOSE", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                })
+                .setActionTextColor(getResources().getColor(android.R.color.holo_blue_light))
+                .show();
+
     }
 
     private void showAddNewDialog() {
@@ -242,12 +312,15 @@ public class MainActivity extends AppCompatActivity {
 
         switch (event.getTag()) {
             case "Expense":
+                expense = Math.round(event.getTotal());
                 mTotalExpense.setText(String.valueOf(Math.round(event.getTotal())));
                 break;
             case "Meal":
+                meals = Math.round(event.getTotal());
                 mTotalMeals.setText(String.valueOf(Math.round(event.getTotal())));
                 break;
             case "Price":
+                currentPrice = Math.round(event.getTotal());
                 mMealPrice.setText(String.valueOf(Math.round(event.getTotal())));
                 break;
             case "EMPTY":
@@ -269,5 +342,35 @@ public class MainActivity extends AppCompatActivity {
 
     public void dbDeleteMember(Member pMember) {
         mViewModel.deleteItem(pMember);
+    }
+
+    public void startDetailFragment(int pId) {
+        startFragment(InforamtionFragment.newInstance(pId), TagManager.INFO_FRAGMENT);
+    }
+
+    public void startFragment(Fragment fragment, String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container, fragment, tag).addToBackStack(null);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
+        } else {
+            new AlertDialog.Builder(this)
+                    .setMessage("Are you sure you want to exit?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            MainActivity.super.onBackPressed();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        }
     }
 }

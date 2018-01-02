@@ -4,10 +4,11 @@
     <color name="colorPrimaryDark">#42a5f5</color>
     <color name="colorAccent">#42a5f5</color>
     <color name="colorYellow">#ffca28</color>
+    <color name="colorYellow2">#ffee58</color>
     <color name="colorBG">#fafafa</color>
     <color name="colorDivider">#d6d6d6</color>
     <color name="colorPos">#4caf50</color>
-    <color name="colorNeg">#c62828</color>
+    <color name="colorNeg">#e53935</color>
     <color name="colorText">#424242</color>
     <color name="colorBlu">#4fc3f7</color>
     <color name="colorBlu1">#0288d1</color>

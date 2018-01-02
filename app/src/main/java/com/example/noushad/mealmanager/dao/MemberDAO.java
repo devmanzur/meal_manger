@@ -23,7 +23,7 @@ public interface MemberDAO {
     LiveData<List<Member>> getAllMembers();
 
     @Query("select * from Member where id = :id")
-    Member getMemberById(String id);
+    Member getMemberById(int id);
 
     @Insert(onConflict = REPLACE)
     void addMember(Member Member);

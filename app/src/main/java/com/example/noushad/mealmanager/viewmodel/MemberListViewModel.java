@@ -7,7 +7,10 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 import com.example.noushad.mealmanager.database.MemberDB;
+import com.example.noushad.mealmanager.event.MemberEvent;
 import com.example.noushad.mealmanager.model.Member;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -54,6 +57,9 @@ public class MemberListViewModel extends AndroidViewModel {
         new bgTask(appDatabase, CLEAR_TASK).execute();
     }
 
+    public void getMember(int pId) {
+        new BackgrounTask(appDatabase).execute(pId);
+    }
 
     private static class bgTask extends AsyncTask<Member, Void, Void> {
 
@@ -85,5 +91,24 @@ public class MemberListViewModel extends AndroidViewModel {
         }
     }
 
+    private static class BackgrounTask extends AsyncTask<Integer,Void,Member>{
 
+        private MemberDB db;
+
+        BackgrounTask(MemberDB appDatabase) {
+            db = appDatabase;
+        }
+
+
+        @Override
+        protected Member doInBackground(Integer... ids) {
+            return db.memberDAO().getMemberById(ids[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Member pMember) {
+            super.onPostExecute(pMember);
+            EventBus.getDefault().post(new MemberEvent(pMember));
+        }
+    }
 }
