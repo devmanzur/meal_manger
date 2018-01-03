@@ -88,7 +88,7 @@
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="0dp"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="18dp"
@@ -109,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:fontFamily="@font/advent_pro"
                     android:text="Total Meals"
                     android:textColor="@color/colorBG"
@@ -125,6 +125,7 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="4dp"
+                    android:elevation="10dp"
                     android:fontFamily="@font/advent_pro"
                     android:text="123"
                     android:textColor="@color/colorBG"
@@ -148,7 +149,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="12dp"
                     android:fontFamily="@font/advent_pro"
                     android:text="Total Spent"
                     android:textColor="@color/colorBlu1"
@@ -160,16 +161,20 @@
                     android:id="@+id/member_info_totaspent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="4dp"
+                    android:elevation="10dp"
                     android:fontFamily="@font/advent_pro"
                     android:text="2345"
                     android:textColor="@color/colorAccent"
                     android:textSize="36sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView9"
+                    app:layout_constraintVertical_bias="0.0" />
             </android.support.constraint.ConstraintLayout>
 
         </LinearLayout>

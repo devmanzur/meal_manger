@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -65,6 +66,7 @@ public class MembersAdapter extends RecyclerView.Adapter {
         private TextView statusText;
         private ImageView indicator;
         private Member mMember;
+        private ImageButton editButton;
 
         public MembersVH(View v) {
             super(v);
@@ -74,11 +76,12 @@ public class MembersAdapter extends RecyclerView.Adapter {
             totalSpentText = v.findViewById(R.id.member_money_spent);
             statusText = v.findViewById(R.id.member_finance_status);
             indicator = v.findViewById(R.id.status_indicator);
+            editButton = v.findViewById(R.id.edit_member_button);
             v.setOnClickListener(this);
             v.setOnLongClickListener(this);
         }
 
-        public void updateUI(Member member) {
+        public void updateUI(final Member member) {
             mMember = member;
             firstLetter.setText(String.valueOf(member.getName().toUpperCase().charAt(0)));
             nameText.setText(member.getName());
@@ -93,22 +96,21 @@ public class MembersAdapter extends RecyclerView.Adapter {
                 indicator.setImageResource(R.drawable.ic_positive_indicator);
                 statusText.setTextColor(mContext.getResources().getColor(R.color.colorPos));
                 statusText.setText(String.valueOf(Math.round(spent - cost)));
-
-
             } else if (spent < cost) {
                 indicator.setImageResource(R.drawable.ic_negative_indicator);
                 statusText.setTextColor(mContext.getResources().getColor(R.color.colorNeg));
                 statusText.setText(String.valueOf(Math.round(cost - spent)));
-
-
             } else {
                 indicator.setImageResource(R.drawable.ic_equal_indicator);
                 statusText.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
                 statusText.setText("0");
-
-
             }
-
+            editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showLongClickDialog(member);
+                }
+            });
 
         }
 
