@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "960496408493",
+    "firebase_url": "https://mealmanager-34b6d.firebaseio.com",
+    "project_id": "mealmanager-34b6d",
+    "storage_bucket": "mealmanager-34b6d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960496408493:android:25c138aba5c90286",
+        "android_client_info": {
+          "package_name": "com.example.noushad.mealmanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960496408493-93bbd6ov9nmd3ppgo91iuan2n9shltnv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.noushad.mealmanager",
+            "certificate_hash": "e181bd5823b856e38d118aaf0ecdd26a52f3177b"
+          }
+        },
+        {
+          "client_id": "960496408493-n1b0miulrpubg5tufm5ngdj6rn4kd24p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6IabNXUknVoFw-ojRsmgLTIb0OL-s9cw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960496408493-n1b0miulrpubg5tufm5ngdj6rn4kd24p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -147,9 +147,9 @@ public class MembersAdapter extends RecyclerView.Adapter {
                         public void onClick(View v) {
                             try {
                                 float value = Float.parseFloat(mlExInput.getText().toString());
-                                pMember.setTotalMeal(value);
+                                pMember.addMeal(value);
                                 ((MainActivity) mContext).dbUpdateMember(pMember);
-                                SharedPrefManager.getInstance(mContext).setTotalMeals(value);
+                                SharedPrefManager.getInstance(mContext).setTotalMeals(value,0);
                                 notifyDataSetChanged();
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -173,7 +173,7 @@ public class MembersAdapter extends RecyclerView.Adapter {
                                 int value = Integer.parseInt(mlExInput.getText().toString());
                                 pMember.setTotalMoneySpent(value);
                                 ((MainActivity) mContext).dbUpdateMember(pMember);
-                                SharedPrefManager.getInstance(mContext).setTotalExpense(value);
+                                SharedPrefManager.getInstance(mContext).setTotalExpense(value,0);
                                 notifyDataSetChanged();
                             } catch (Exception e) {
 

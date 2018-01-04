@@ -29,6 +29,14 @@ public class Member {
     @TypeConverters(DateConverter.class)
     private Date creationDate;
 
+    public Member() {
+        creationDate = new Date();
+        this.totalMeal = 0;
+        this.totalMoneySpent = 0;
+        meals = new ArrayList<>();
+        bazars = new ArrayList<>();
+    }
+
     public Member(String name) {
         this.name = name;
         creationDate = new Date();
@@ -36,6 +44,10 @@ public class Member {
         this.totalMoneySpent = 0;
         meals = new ArrayList<>();
         bazars = new ArrayList<>();
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -46,7 +58,11 @@ public class Member {
         return totalMeal;
     }
 
-    public void setTotalMeal(float meal) {
+    public void setTotalMeal(float totalMeal) {
+        this.totalMeal = totalMeal;
+    }
+
+    public void addMeal(float meal) {
         this.totalMeal += meal;
         meals.add(new Meal(new Date(),meal));
     }

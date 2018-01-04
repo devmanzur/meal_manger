@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -27,9 +28,13 @@ import android.widget.TextView;
 
 import com.example.noushad.mealmanager.R;
 import com.example.noushad.mealmanager.adapter.MembersAdapter;
+import com.example.noushad.mealmanager.event.DataUploadedEvent;
+import com.example.noushad.mealmanager.event.ErrorEvent;
 import com.example.noushad.mealmanager.event.UpdateEvent;
+import com.example.noushad.mealmanager.fragment.DashboardFragment;
 import com.example.noushad.mealmanager.fragment.InforamtionFragment;
 import com.example.noushad.mealmanager.model.Member;
+import com.example.noushad.mealmanager.utility.FirebaseService;
 import com.example.noushad.mealmanager.utility.SharedPrefManager;
 import com.example.noushad.mealmanager.utility.TagManager;
 import com.example.noushad.mealmanager.viewmodel.MemberListViewModel;
@@ -37,6 +42,13 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -45,7 +57,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DashboardFragment.OnFragmentInteractionListener {
 
     private MemberListViewModel mViewModel;
     private TextView mTotalExpense;
@@ -58,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private FloatingActionButton fabMealInfo;
     private FloatingActionButton fabExpenseInfo;
+    private ConstraintLayout MainContainer;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -67,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_home:
                     return true;
                 case R.id.navigation_dashboard:
-//                    clearData();
+                    startFragment(DashboardFragment.newInstance(), TagManager.DASHBOARD_FRAGMENT);
                     return true;
                 case R.id.navigation_notifications:
                     return true;
@@ -78,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
     private int expense;
     private float meals;
     private float currentPrice;
+    private List<Member> mMembersList;
+    FirebaseService mService;
 
     private void clearData() {
         SharedPrefManager.getInstance(MainActivity.this).clear();
@@ -91,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setFullScreen();
         setContentView(R.layout.activity_main);
+        MainContainer = findViewById(R.id.main_container);
+        mService = new FirebaseService();
         initializeViews();
         mViewModel = ViewModelProviders.of(this).get(MemberListViewModel.class);
         showDetails();
@@ -186,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         currentMealPrice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSnack("Current Price Per Meal : ", Math.round(currentPrice));
+                showSnack("Current Price Per Meal : " + String.valueOf(Math.round(currentPrice)));
             }
         });
 
@@ -202,14 +219,14 @@ public class MainActivity extends AppCompatActivity {
         fabMealInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSnack("Total Meals : ", Math.round(meals));
+                showSnack("Total Meals : " + String.valueOf(Math.round(meals)));
             }
         });
 
         fabExpenseInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSnack("Total Expense : ", expense);
+                showSnack("Total Expense : " + String.valueOf(expense));
             }
         });
     }
@@ -227,9 +244,9 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void showSnack(String tag, int count) {
+    private void showSnack(String text) {
 
-        Snackbar.make(this.findViewById(R.id.container), tag + String.valueOf(count), Snackbar.LENGTH_LONG)
+        Snackbar.make(this.findViewById(R.id.container), text, Snackbar.LENGTH_LONG)
                 .setAction("CLOSE", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -278,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
         mViewModel.getMembers().observe(MainActivity.this, new Observer<List<Member>>() {
             @Override
             public void onChanged(@Nullable List<Member> pMembers) {
+                mMembersList = pMembers;
                 mAdapter.addItems(pMembers);
                 setUpPieChart(pMembers);
             }
@@ -324,12 +342,25 @@ public class MainActivity extends AppCompatActivity {
                 mMealPrice.setText(String.valueOf(Math.round(event.getTotal())));
                 break;
             case "EMPTY":
+                currentPrice = 0;
+                expense = 0;
+                meals = 0;
                 mMealPrice.setText("0");
                 mTotalMeals.setText("0");
                 mTotalExpense.setText("0");
                 break;
 
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUploadEvent(DataUploadedEvent event) {
+        showSnack("Data Uploaded Successfully");
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onErrorEvent(ErrorEvent event) {
+        showSnack(event.getErrorMessage());
     }
 
     public void dbAddMember(Member pMember) {
@@ -349,6 +380,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startFragment(Fragment fragment, String tag) {
+        MainContainer.setVisibility(View.GONE);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, fragment, tag).addToBackStack(null);
@@ -359,6 +391,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+                MainContainer.setVisibility(View.VISIBLE);
+            }
             getSupportFragmentManager().popBackStack();
         } else {
             new AlertDialog.Builder(this)
@@ -372,5 +407,98 @@ public class MainActivity extends AppCompatActivity {
                     .setNegativeButton("No", null)
                     .show();
         }
+    }
+
+    @Override
+    public void onDashboardInteraction(int command) {
+        switch (command) {
+            case TagManager.UPLOAD_TASK:
+                uploadInfoToDB();
+                break;
+            case TagManager.DOWNLOAD_TASK:
+                downloadInfoFromDB();
+                break;
+        }
+    }
+
+    private void downloadInfoFromDB() {
+        String id = SharedPrefManager.getInstance(this).getUserId();
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        database.child("users").child(id).child("expense").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                expense = dataSnapshot.getValue(Integer.class);
+                SharedPrefManager.getInstance(MainActivity.this).setTotalExpense(expense, 101);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        database.child("users").child(id).child("meals").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                meals = dataSnapshot.getValue(Float.class);
+                SharedPrefManager.getInstance(MainActivity.this).setTotalMeals(meals, 101);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                showSnack(databaseError.getMessage());
+            }
+        });
+        database.child("users").child(id).child("current_price").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                currentPrice = dataSnapshot.getValue(Float.class);
+                SharedPrefManager.getInstance(MainActivity.this).setMealPrice(currentPrice);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        Query query = database.child("users").child(id).child("members");
+        makeQuery(query);
+
+    }
+
+    private void makeQuery(Query query) {
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Member member = dataSnapshot.getValue(Member.class);
+                dbAddMember(member);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        showSnack("Database has been updated");
+
+    }
+
+    private void uploadInfoToDB() {
+        String id = SharedPrefManager.getInstance(this).getUserId();
+        mService.uploadLocalDB(id, expense, meals, currentPrice, mMembersList);
     }
 }

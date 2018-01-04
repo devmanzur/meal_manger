@@ -6,6 +6,7 @@
     <color name="colorYellow">#ffca28</color>
     <color name="colorYellow2">#ffee58</color>
     <color name="colorBG">#fafafa</color>
+    <color name="colorBGdark">#f5f5f5</color>
     <color name="colorDivider">#d6d6d6</color>
     <color name="colorPos">#4caf50</color>
     <color name="colorNeg">#e53935</color>

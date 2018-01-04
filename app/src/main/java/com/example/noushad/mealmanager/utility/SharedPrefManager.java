@@ -21,6 +21,8 @@ public class SharedPrefManager {
     private static final String KEY_TOTAL_EXPENSE = "com.example.noushad.mealmanager.total_expense";
     private static final String KEY_TOTAL_MEALS = "com.example.noushad.mealmanager.total_meals";
     private static final String KEY_CURRENT_MEAL_PRICE = "com.example.noushad.mealmanager.meal_price";
+    private static final String KEY_USER_ID = "keyuserid";
+
 
     private SharedPrefManager(Context context) {
         sContext = context;
@@ -33,8 +35,14 @@ public class SharedPrefManager {
         return mInstance;
     }
 
-    public boolean setTotalExpense(int amount) {
-        int total = getTotalExpense() + amount;
+    public boolean setTotalExpense(int amount, int code) {
+        int total;
+
+        if (code == 101) {
+            total = amount;
+        } else {
+            total = getTotalExpense() + amount;
+        }
         SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(KEY_TOTAL_EXPENSE, total);
@@ -48,12 +56,16 @@ public class SharedPrefManager {
         return true;
     }
 
-    public boolean setTotalMeals(float amount) {
-        float total = getTotalMeals() + amount;
-
+    public boolean setTotalMeals(float amount, int code) {
+        float total;
+        if (code == 101) {
+            total = amount;
+        } else {
+            total = getTotalMeals() + amount;
+        }
         SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putFloat(KEY_TOTAL_MEALS,  total);
+        editor.putFloat(KEY_TOTAL_MEALS, total);
         editor.apply();
         EventBus.getDefault().post(new UpdateEvent(total, "Meal"));
         if (total > 0) {
@@ -95,5 +107,29 @@ public class SharedPrefManager {
         editor.commit();
         return true;
 
+    }
+
+    public void setUserId(String uid) {
+        SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_USER_ID, uid);
+        editor.apply();
+    }
+
+    public String getUserId() {
+        SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        String userId = sharedPreferences.getString(KEY_USER_ID, null);
+        return userId;
+    }
+
+    public boolean isLoggedIn() {
+        return getUserId() != null;
+    }
+
+    public void logOutUser() {
+        SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(KEY_USER_ID);
+        editor.apply();
     }
 }
