@@ -10,5 +10,5 @@ public class TagManager {
     public static final String DASHBOARD_FRAGMENT = "com.example.noushad.mealmanager.utility.dash_fragment";
     public static final int UPLOAD_TASK = 101;
     public static final int DOWNLOAD_TASK = 111;
-
+    public static final int CHECK_TASK = 201;
 }

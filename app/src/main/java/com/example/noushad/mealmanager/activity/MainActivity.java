@@ -26,6 +26,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.noushad.mealmanager.R;
 import com.example.noushad.mealmanager.adapter.MembersAdapter;
@@ -419,26 +420,29 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
         switch (command) {
             case TagManager.UPLOAD_TASK:
                 getLastUpdate(1);
-
                 break;
             case TagManager.DOWNLOAD_TASK:
                 getLastUpdate(2);
-
                 break;
+            case TagManager.CHECK_TASK:
+                getLastUpdate(3);
+                break;
+
         }
     }
 
     private void getLastUpdate(final int mode) {
-        String id = SharedPrefManager.getInstance(this).getUserId();
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        final String id = SharedPrefManager.getInstance(this).getUserId();
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         database.child("users").child(id).child("last_updated").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
                     Date date = dataSnapshot.getValue(Date.class);
                     DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK);
-                    String dateString = String.valueOf(dateFormat.format(date));
-                    if(mode==2) {
+                    final String dateString = String.valueOf(dateFormat.format(date));
+
+                    if (mode == 2) {
                         new AlertDialog.Builder(MainActivity.this)
                                 .setMessage("You are adding data from " + dateString)
                                 .setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
@@ -449,7 +453,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
                                 })
                                 .setNegativeButton("CANCEL", null)
                                 .show();
-                    }else{
+                    } else if (mode == 1) {
                         new AlertDialog.Builder(MainActivity.this)
                                 .setMessage("You are replacing data from " + dateString)
                                 .setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
@@ -461,6 +465,34 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
                                 .setNegativeButton("CANCEL", null)
                                 .show();
 
+                    } else {
+                        database.child("users").child(id).child("device_name").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                String device = dataSnapshot.getValue(String.class);
+
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                                    new AlertDialog.Builder(MainActivity.this)
+                                            .setMessage("Your Data was last updated from : "+System.lineSeparator()
+                                                    +System.lineSeparator()+"Device :"+ device +System.lineSeparator()
+                                                    +System.lineSeparator() +"Date : " + dateString)
+                                            .setNegativeButton("CANCEL", null)
+                                            .show();
+                                }else{
+                                    new AlertDialog.Builder(MainActivity.this)
+                                            .setMessage("Your Data was last updated from : " + " On : " + dateString)
+                                            .setNegativeButton("CANCEL", null)
+                                            .show();
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                 } catch (Exception e) {
 
@@ -470,6 +502,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+                Toast.makeText(MainActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

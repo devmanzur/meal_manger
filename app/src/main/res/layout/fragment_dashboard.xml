@@ -13,6 +13,31 @@
         android:layout_height="match_parent">
 
         <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_check_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:clickable="true"
+            android:src="@drawable/ic_check"
+            app:backgroundTint="#66bb6a"
+            app:fabSize="normal"
+            app:layout_constraintStart_toStartOf="@+id/fab_download_button"
+            app:layout_constraintTop_toBottomOf="@+id/fab_download_button" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Check Last Update"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="@+id/fab_check_button"
+            app:layout_constraintStart_toEndOf="@+id/fab_check_button"
+            app:layout_constraintTop_toTopOf="@+id/fab_check_button" />
+
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_upload_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

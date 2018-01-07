@@ -62,6 +62,7 @@ public class DashboardFragment extends Fragment {
     private void initializeViews(View v) {
         FloatingActionButton fabUpload = v.findViewById(R.id.fab_upload_button);
         FloatingActionButton fabDownload = v.findViewById(R.id.fab_download_button);
+        FloatingActionButton fabCheck = v.findViewById(R.id.fab_check_button);
         fabUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,6 +73,13 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 onButtonPressed(TagManager.DOWNLOAD_TASK);
+            }
+        });
+
+        fabCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onButtonPressed(TagManager.CHECK_TASK);
             }
         });
         signInButton = v.findViewById(R.id.sign_in_button);
@@ -118,8 +126,8 @@ public class DashboardFragment extends Fragment {
 
         if(loggedIn) {
             new AlertDialog.Builder(getContext())
-                    .setMessage("Do you want to sync data with server?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    .setMessage("You are connecting to server")
+                    .setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if (mListener != null) {
@@ -127,7 +135,7 @@ public class DashboardFragment extends Fragment {
                             }
                         }
                     })
-                    .setNegativeButton("No", null)
+                    .setNegativeButton("CANCEL", null)
                     .show();
 
         }else{
