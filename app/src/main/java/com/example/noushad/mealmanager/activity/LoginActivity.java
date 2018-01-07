@@ -134,9 +134,13 @@ public class LoginActivity extends AppCompatActivity {
                 mProgressDialog.dismiss();
                 if (task.isSuccessful()) {
                     FirebaseUser user = mAuth.getCurrentUser();
-                    SharedPrefManager.getInstance(LoginActivity.this).setUserId(user.getUid());
-
-                    LoginActivity.this.finish();
+                    if(user.isEmailVerified()) {
+                        SharedPrefManager.getInstance(LoginActivity.this).setUserId(user.getUid());
+                        LoginActivity.this.finish();
+                    }else{
+                        showSnack("You Haven't Verified Your Email Address");
+                        mAuth.signOut();
+                    }
 
                 } else {
                     showSnack(task.getException().getLocalizedMessage());
@@ -151,7 +155,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 mProgressDialog.dismiss();
                 if (task.isSuccessful()) {
-                    showSnack("Registered Successfully");
+                    FirebaseUser user = mAuth.getCurrentUser();
+                        user.sendEmailVerification();
+                    showSnack("Check your Email to complete the process");
                 } else {
                     showSnack(task.getException().getLocalizedMessage());
                 }

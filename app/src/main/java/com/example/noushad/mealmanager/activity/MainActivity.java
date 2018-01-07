@@ -3,6 +3,7 @@ package com.example.noushad.mealmanager.activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -54,8 +55,11 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements DashboardFragment.OnFragmentInteractionListener {
 
@@ -386,6 +390,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
         fragmentTransaction.replace(R.id.container, fragment, tag).addToBackStack(null);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         fragmentTransaction.commit();
+
     }
 
     @Override
@@ -413,22 +418,53 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
     public void onDashboardInteraction(int command) {
         switch (command) {
             case TagManager.UPLOAD_TASK:
-                uploadInfoToDB();
+                getLastUpdate(1);
+
                 break;
             case TagManager.DOWNLOAD_TASK:
-                downloadInfoFromDB();
+                getLastUpdate(2);
+
                 break;
         }
     }
 
-    private void downloadInfoFromDB() {
+    private void getLastUpdate(final int mode) {
         String id = SharedPrefManager.getInstance(this).getUserId();
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        database.child("users").child(id).child("expense").addListenerForSingleValueEvent(new ValueEventListener() {
+        database.child("users").child(id).child("last_updated").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                expense = dataSnapshot.getValue(Integer.class);
-                SharedPrefManager.getInstance(MainActivity.this).setTotalExpense(expense, 101);
+                try {
+                    Date date = dataSnapshot.getValue(Date.class);
+                    DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK);
+                    String dateString = String.valueOf(dateFormat.format(date));
+                    if(mode==2) {
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setMessage("You are adding data from " + dateString)
+                                .setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        downloadInfoFromDB();
+                                    }
+                                })
+                                .setNegativeButton("CANCEL", null)
+                                .show();
+                    }else{
+                        new AlertDialog.Builder(MainActivity.this)
+                                .setMessage("You are replacing data from " + dateString)
+                                .setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        uploadInfoToDB();
+                                    }
+                                })
+                                .setNegativeButton("CANCEL", null)
+                                .show();
+
+                    }
+                } catch (Exception e) {
+
+                }
             }
 
             @Override
@@ -436,64 +472,121 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
 
             }
         });
-        database.child("users").child(id).child("meals").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                meals = dataSnapshot.getValue(Float.class);
-                SharedPrefManager.getInstance(MainActivity.this).setTotalMeals(meals, 101);
-            }
+    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                showSnack(databaseError.getMessage());
-            }
-        });
-        database.child("users").child(id).child("current_price").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                currentPrice = dataSnapshot.getValue(Float.class);
-                SharedPrefManager.getInstance(MainActivity.this).setMealPrice(currentPrice);
-            }
+    private void downloadInfoFromDB() {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+        try {
+            String id = SharedPrefManager.getInstance(this).getUserId();
+            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+            database.child("users").child(id).child("expense").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    try {
+                        expense = dataSnapshot.getValue(Integer.class);
+                        SharedPrefManager.getInstance(MainActivity.this).setTotalExpense(expense, 101);
+                    } catch (Exception e) {
 
-            }
-        });
-        Query query = database.child("users").child(id).child("members");
-        makeQuery(query);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            database.child("users").child(id).child("meals").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    try {
+                        meals = dataSnapshot.getValue(Float.class);
+                        SharedPrefManager.getInstance(MainActivity.this).setTotalMeals(meals, 101);
+
+                    } catch (Exception e) {
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    showSnack(databaseError.getMessage());
+                }
+            });
+            database.child("users").child(id).child("current_price").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    try {
+                        currentPrice = dataSnapshot.getValue(Float.class);
+                        SharedPrefManager.getInstance(MainActivity.this).setMealPrice(currentPrice);
+
+                    } catch (Exception e) {
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            Query query = database.child("users").child(id).child("members");
+            makeQuery(query);
+
+            database.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    showSnack("Database has been updated");
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        } catch (Exception e) {
+
+        }
 
     }
 
     private void makeQuery(Query query) {
-        query.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Member member = dataSnapshot.getValue(Member.class);
-                dbAddMember(member);
-            }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+        try {
+            query.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Member member = dataSnapshot.getValue(Member.class);
+                    dbAddMember(member);
+                }
 
-            }
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                }
 
-            }
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                }
 
-            }
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                }
 
-            }
-        });
-        showSnack("Database has been updated");
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        } catch (Exception e) {
+
+        }
 
     }
 

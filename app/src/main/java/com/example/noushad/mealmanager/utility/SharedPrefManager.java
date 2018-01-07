@@ -22,6 +22,7 @@ public class SharedPrefManager {
     private static final String KEY_TOTAL_MEALS = "com.example.noushad.mealmanager.total_meals";
     private static final String KEY_CURRENT_MEAL_PRICE = "com.example.noushad.mealmanager.meal_price";
     private static final String KEY_USER_ID = "keyuserid";
+    private static final String KEY_LAST_CHANGED = "keylastchanged";
 
 
     private SharedPrefManager(Context context) {
