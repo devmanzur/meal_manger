@@ -67,11 +67,15 @@ public class Member {
         meals.add(new Meal(new Date(),meal));
     }
 
+    public void setTotalMoneySpent(int totalMoneySpent) {
+        this.totalMoneySpent = totalMoneySpent;
+    }
+
     public int getTotalMoneySpent() {
         return totalMoneySpent;
     }
 
-    public void setTotalMoneySpent(int money) {
+    public void addTotalMoney(int money) {
         this.totalMoneySpent += money;
         bazars.add(money);
         this.lastBazarDate = new Date();

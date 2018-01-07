@@ -171,7 +171,7 @@ public class MembersAdapter extends RecyclerView.Adapter {
                         public void onClick(View v) {
                             try {
                                 int value = Integer.parseInt(mlExInput.getText().toString());
-                                pMember.setTotalMoneySpent(value);
+                                pMember.addTotalMoney(value);
                                 ((MainActivity) mContext).dbUpdateMember(pMember);
                                 SharedPrefManager.getInstance(mContext).setTotalExpense(value,0);
                                 notifyDataSetChanged();
