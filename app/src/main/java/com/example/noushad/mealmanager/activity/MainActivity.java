@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private MembersAdapter mAdapter;
-    private TextView currentMealPrice;
     private FloatingActionButton fab;
     private FloatingActionButton fabMealInfo;
     private FloatingActionButton fabExpenseInfo;
@@ -247,16 +246,15 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
         });
         fabMealInfo = findViewById(R.id.floatingActionButton2);
         fabExpenseInfo = findViewById(R.id.floatingActionButton);
-        currentMealPrice = findViewById(R.id.current_price);
 
-        currentMealPrice.setOnClickListener(new View.OnClickListener() {
+        mMealPrice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSnack("Current Price Per Meal : " + String.valueOf(currentPrice));
+                showSnack("Current Price Per Meal : " + String.format("%.1f", currentPrice));
             }
         });
 
-        currentMealPrice.setOnLongClickListener(new View.OnLongClickListener() {
+        mMealPrice.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 showClearDialog();
