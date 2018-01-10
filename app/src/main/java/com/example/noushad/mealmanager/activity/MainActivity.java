@@ -39,11 +39,16 @@ import com.example.noushad.mealmanager.model.Member;
 import com.example.noushad.mealmanager.utility.FirebaseService;
 import com.example.noushad.mealmanager.utility.SharedPrefManager;
 import com.example.noushad.mealmanager.utility.TagManager;
+import com.example.noushad.mealmanager.utility.ToastListener;
 import com.example.noushad.mealmanager.viewmodel.MemberListViewModel;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -57,6 +62,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -76,6 +82,11 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
     private FloatingActionButton fabMealInfo;
     private FloatingActionButton fabExpenseInfo;
     private ConstraintLayout MainContainer;
+    private AdView mAdView;
+    private InterstitialAd mInterstitialAd;
+
+
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -85,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
                 case R.id.navigation_home:
                     return true;
                 case R.id.navigation_dashboard:
-                    startFragment(DashboardFragment.newInstance(), TagManager.DASHBOARD_FRAGMENT);
+                    showInterstitial();
                     return true;
                 case R.id.navigation_notifications:
                     return true;
@@ -93,6 +104,16 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
             return false;
         }
     };
+
+    private void showInterstitial() {
+
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        } else {
+            startFragment(DashboardFragment.newInstance(), TagManager.DASHBOARD_FRAGMENT);
+        }
+    }
+
     private int expense;
     private float meals;
     private float currentPrice;
@@ -170,11 +191,15 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
     }
 
     private void showDetails() {
+
         expense = SharedPrefManager.getInstance(this).getTotalExpense();
+
         meals = SharedPrefManager.getInstance(this).getTotalMeals();
+
         currentPrice = SharedPrefManager.getInstance(this).getCurrentMealPrice();
+
         mTotalExpense.setText(String.valueOf(Math.round(expense)));
-        mTotalMeals.setText(String.valueOf(Math.round(meals)));
+        mTotalMeals.setText(String.valueOf(meals));
         mMealPrice.setText(String.valueOf(Math.round(currentPrice)));
     }
 
@@ -185,6 +210,25 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
     }
 
     private void initializeViews() {
+        mAdView = findViewById(R.id.adView);
+        mAdView.setAdListener(new ToastListener(this));
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+        mInterstitialAd = new InterstitialAd(this);
+        mInterstitialAd.setAdUnitId(getString(R.string.InterstitialAd));
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        mInterstitialAd.setAdListener(new AdListener(){
+            @Override
+            public void onAdClosed() {
+                startFragment(DashboardFragment.newInstance(), TagManager.DASHBOARD_FRAGMENT);
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+
+            }
+        });
+
+
+
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         mRecyclerView = findViewById(R.id.members_list);
@@ -208,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
         currentMealPrice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSnack("Current Price Per Meal : " + String.valueOf(Math.round(currentPrice)));
+                showSnack("Current Price Per Meal : " + String.valueOf(currentPrice));
             }
         });
 
@@ -224,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
         fabMealInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showSnack("Total Meals : " + String.valueOf(Math.round(meals)));
+                showSnack("Total Meals : " + String.valueOf(meals));
             }
         });
 
@@ -339,12 +383,12 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
                 mTotalExpense.setText(String.valueOf(Math.round(event.getTotal())));
                 break;
             case "Meal":
-                meals = Math.round(event.getTotal());
-                mTotalMeals.setText(String.valueOf(Math.round(event.getTotal())));
+                meals = event.getTotal();
+                mTotalMeals.setText(String.valueOf(meals));
                 break;
             case "Price":
-                currentPrice = Math.round(event.getTotal());
-                mMealPrice.setText(String.valueOf(Math.round(event.getTotal())));
+                currentPrice = event.getTotal();
+                mMealPrice.setText(String.valueOf(Math.round(currentPrice)));
                 break;
             case "EMPTY":
                 currentPrice = 0;
@@ -390,7 +434,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.container, fragment, tag).addToBackStack(null);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragmentTransaction.commit();
+        fragmentTransaction.commitAllowingStateLoss();
 
     }
 
@@ -438,7 +482,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 try {
-                    Date date = dataSnapshot.getValue(Date.class);
+                    final Date date = dataSnapshot.getValue(Date.class);
                     DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.UK);
                     final String dateString = String.valueOf(dateFormat.format(date));
 
@@ -472,11 +516,14 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
 
                                 String device = dataSnapshot.getValue(String.class);
 
+                                DateFormat dateFormat = new SimpleDateFormat("dd MMM . h:mm a");
+                                String dateStr = dateFormat.format(date);
+
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                                     new AlertDialog.Builder(MainActivity.this)
                                             .setMessage("Your Data was last updated from : "+System.lineSeparator()
                                                     +System.lineSeparator()+"Device :"+ device +System.lineSeparator()
-                                                    +System.lineSeparator() +"Date : " + dateString)
+                                                    +System.lineSeparator() +"Date : " + dateStr)
                                             .setNegativeButton("CANCEL", null)
                                             .show();
                                 }else{

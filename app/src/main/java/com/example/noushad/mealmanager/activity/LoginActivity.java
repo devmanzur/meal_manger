@@ -13,6 +13,9 @@ import android.widget.EditText;
 
 import com.example.noushad.mealmanager.R;
 import com.example.noushad.mealmanager.utility.SharedPrefManager;
+import com.example.noushad.mealmanager.utility.ToastListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -26,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final int REQUEST_READ_CONTACTS = 0;
     FirebaseAuth mAuth;
+    private AdView mAdView;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -52,6 +56,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initialize() {
+
+        mAdView = findViewById(R.id.banner_ad_3);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+        mAdView.setAdListener(new ToastListener(this));
 
         mProgressDialog = new ProgressDialog(this);
         mAuth = FirebaseAuth.getInstance();

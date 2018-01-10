@@ -77,6 +77,7 @@ public class SharedPrefManager {
     }
 
     public boolean setMealPrice(float amount) {
+
         SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putFloat(KEY_CURRENT_MEAL_PRICE, amount);

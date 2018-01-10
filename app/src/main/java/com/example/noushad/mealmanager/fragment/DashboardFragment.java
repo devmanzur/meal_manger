@@ -17,14 +17,21 @@ import com.example.noushad.mealmanager.R;
 import com.example.noushad.mealmanager.activity.LoginActivity;
 import com.example.noushad.mealmanager.utility.SharedPrefManager;
 import com.example.noushad.mealmanager.utility.TagManager;
+import com.example.noushad.mealmanager.utility.ToastListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.InterstitialAd;
 
 public class DashboardFragment extends Fragment {
+    private static final int SHOW_LOGIN = 111;
     // TODO: Rename parameter arguments, choose names that match
     // TODO: Rename and change types of parameters
 
     private OnFragmentInteractionListener mListener;
     private boolean loggedIn;
     private Button signInButton;
+    private AdView mAdView;
+    private InterstitialAd mInterstitialAd;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -47,6 +54,7 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
         loggedIn = SharedPrefManager.getInstance(getContext()).isLoggedIn();
         setButtonText();
     }
@@ -60,6 +68,15 @@ public class DashboardFragment extends Fragment {
     }
 
     private void initializeViews(View v) {
+
+        mAdView = v.findViewById(R.id.banner_ad_2);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+        mAdView.setAdListener(new ToastListener(getContext()));
+
+        mInterstitialAd = new InterstitialAd(getContext());
+        mInterstitialAd.setAdUnitId(getString(R.string.InterstitialAd));
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
         FloatingActionButton fabUpload = v.findViewById(R.id.fab_upload_button);
         FloatingActionButton fabDownload = v.findViewById(R.id.fab_download_button);
         FloatingActionButton fabCheck = v.findViewById(R.id.fab_check_button);
@@ -87,7 +104,7 @@ public class DashboardFragment extends Fragment {
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(loggedIn){
+                if (loggedIn) {
                     new AlertDialog.Builder(getContext())
                             .setMessage("You are about to sign out")
                             .setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
@@ -99,7 +116,8 @@ public class DashboardFragment extends Fragment {
                             })
                             .setNegativeButton("CANCEL", null)
                             .show();
-                }else{
+                } else {
+                    showInterstitialAd(SHOW_LOGIN);
                     showLoginScreen();
                 }
             }
@@ -108,10 +126,22 @@ public class DashboardFragment extends Fragment {
 
     }
 
+    private void showInterstitialAd(int command) {
+        if (mInterstitialAd.isLoaded()) {
+            mInterstitialAd.show();
+        } else {
+            if (command == SHOW_LOGIN) {
+                showLoginScreen();
+            }else{
+
+            }
+        }
+    }
+
     private void setButtonText() {
-        if(loggedIn){
+        if (loggedIn) {
             signInButton.setText("SIGN OUT");
-        }else{
+        } else {
             signInButton.setText("SIGN IN");
         }
     }
@@ -124,13 +154,14 @@ public class DashboardFragment extends Fragment {
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(final int taskmode) {
 
-        if(loggedIn) {
+        if (loggedIn) {
             new AlertDialog.Builder(getContext())
                     .setMessage("You are connecting to server")
                     .setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if (mListener != null) {
+                                showInterstitialAd(0);
                                 mListener.onDashboardInteraction(taskmode);
                             }
                         }
@@ -138,7 +169,7 @@ public class DashboardFragment extends Fragment {
                     .setNegativeButton("CANCEL", null)
                     .show();
 
-        }else{
+        } else {
             showLoginScreen();
         }
     }
@@ -165,6 +196,8 @@ public class DashboardFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+
 
 
     public interface OnFragmentInteractionListener {

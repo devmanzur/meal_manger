@@ -12,6 +12,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/banner_ad_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:adSize="BANNER"
+            app:adUnitId="@string/banner_ad_unit_id"
+            app:layout_constraintBottom_toTopOf="@+id/sign_in_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView5"
+            app:layout_constraintTop_toBottomOf="@+id/fab_check_button"
+            app:layout_constraintVertical_bias="1.0" />
+
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_upload_button"
             android:layout_width="wrap_content"
@@ -121,10 +137,10 @@
             android:id="@+id/sign_in_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/colorYellow2"
+            android:background="@color/colorYellow"
             android:fontFamily="@font/advent_pro"
             android:text="SIGN OUT"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorBG"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
