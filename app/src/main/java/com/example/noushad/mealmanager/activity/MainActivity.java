@@ -1,8 +1,11 @@
 package com.example.noushad.mealmanager.activity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -64,6 +67,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -96,8 +100,6 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
                     return true;
                 case R.id.navigation_dashboard:
                     showInterstitial();
-                    return true;
-                case R.id.navigation_notifications:
                     return true;
             }
             return false;
@@ -136,6 +138,23 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
         initializeViews();
         mViewModel = ViewModelProviders.of(this).get(MemberListViewModel.class);
         showDetails();
+        setAlarm();
+    }
+
+    private void setAlarm() {
+
+        if(!SharedPrefManager.getInstance(this).isAlarmSet()) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 20);
+            calendar.set(Calendar.MINUTE, 15);
+            calendar.set(Calendar.SECOND, 30);
+            Intent intent = new Intent(getApplicationContext(), NotificationReciever.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 101, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+            SharedPrefManager.getInstance(getApplicationContext()).setAlarm();
+        }
     }
 
     private void setUpPieChart(List<Member> members) {

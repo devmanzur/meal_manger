@@ -13,6 +13,7 @@ import org.greenrobot.eventbus.EventBus;
 
 public class SharedPrefManager {
 
+    private static final String KEY_ALARM = "com.example.noushad.mealmanager.alarm";
     private static SharedPrefManager mInstance;
     private static Context sContext;
 
@@ -133,5 +134,22 @@ public class SharedPrefManager {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(KEY_USER_ID);
         editor.apply();
+    }
+
+    public void setAlarm() {
+        SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(KEY_ALARM, true);
+        editor.apply();
+    }
+
+    public boolean isAlarmSet() {
+        return getAlarm();
+    }
+
+    private boolean getAlarm() {
+        SharedPreferences sharedPreferences = sContext.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        boolean set = sharedPreferences.getBoolean(KEY_ALARM, false);
+        return set;
     }
 }
