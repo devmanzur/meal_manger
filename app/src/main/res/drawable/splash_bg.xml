@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@color/colorBG"/>
+
+    <item
+        android:top="214dp"
+        android:bottom="214dp"
+        android:left="68dp"
+        android:right="68dp">
+        <bitmap
+            android:gravity="fill"
+            android:src="@drawable/mealmanagericon"/>
+    </item>
+
+</layer-list>
