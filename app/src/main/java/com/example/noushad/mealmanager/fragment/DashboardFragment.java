@@ -80,6 +80,7 @@ public class DashboardFragment extends Fragment {
         FloatingActionButton fabUpload = v.findViewById(R.id.fab_upload_button);
         FloatingActionButton fabDownload = v.findViewById(R.id.fab_download_button);
         FloatingActionButton fabCheck = v.findViewById(R.id.fab_check_button);
+
         fabUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,7 +118,6 @@ public class DashboardFragment extends Fragment {
                             .setNegativeButton("CANCEL", null)
                             .show();
                 } else {
-                    showInterstitialAd(SHOW_LOGIN);
                     showLoginScreen();
                 }
             }

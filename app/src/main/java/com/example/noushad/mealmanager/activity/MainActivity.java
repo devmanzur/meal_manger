@@ -538,9 +538,9 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
 
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                                     new AlertDialog.Builder(MainActivity.this)
-                                            .setMessage("Your Data was last updated from : "+System.lineSeparator()
-                                                    +System.lineSeparator()+"Device :"+ device +System.lineSeparator()
-                                                    +System.lineSeparator() +"Date : " + dateStr)
+                                            .setMessage("Your Data was last updated from : "+'\n'
+                                                    +'\n'+"Device :"+ device +'\n'
+                                                    +'\n' +"Date : " + dateStr)
                                             .setNegativeButton("CANCEL", null)
                                             .show();
                                 }else{

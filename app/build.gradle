@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'io.fabric'
 android {
     compileSdkVersion 26
     defaultConfig {
@@ -40,6 +40,10 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     compile 'com.google.code.gson:gson:2.8.0'
     implementation 'com.google.android.gms:play-services-ads:11.8.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
+        transitive = true
+    }
+    compile 'com.google.firebase:firebase-core:11.8.0'
 }
 apply plugin: 'com.google.gms.google-services'
 
