@@ -6,6 +6,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -39,6 +40,7 @@ import com.example.noushad.mealmanager.event.ErrorEvent;
 import com.example.noushad.mealmanager.event.UpdateEvent;
 import com.example.noushad.mealmanager.fragment.DashboardFragment;
 import com.example.noushad.mealmanager.fragment.InforamtionFragment;
+import com.example.noushad.mealmanager.fragment.SettingsFragment;
 import com.example.noushad.mealmanager.model.Member;
 import com.example.noushad.mealmanager.utility.FirebaseService;
 import com.example.noushad.mealmanager.utility.SharedPrefManager;
@@ -73,7 +75,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements DashboardFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements DashboardFragment.OnFragmentInteractionListener,SettingsFragment.onSettingsInteractionListener {
 
     private MemberListViewModel mViewModel;
     private TextView mTotalExpense;
@@ -104,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
                 case R.id.navigation_dashboard:
                     showInterstitial();
                     return true;
+                case R.id.nav_settings:
+                    startFragment(new SettingsFragment(),TagManager.SETTINGS_FRAGMENT);
             }
             return false;
         }
@@ -134,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setFullScreen();
+//        setFullScreen();
         setContentView(R.layout.activity_main);
         MainContainer = findViewById(R.id.main_container);
         mService = new FirebaseService();
@@ -710,5 +714,10 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
     private void uploadInfoToDB() {
         String id = SharedPrefManager.getInstance(this).getUserId();
         mService.uploadLocalDB(id, expense, meals, currentPrice, mMembersList);
+    }
+
+    @Override
+    public void onSettingsInteraction(Uri uri) {
+
     }
 }
