@@ -200,5 +200,39 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_add" />
 
+        <ImageView
+            android:id="@+id/empty_image"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="64dp"
+            android:background="@color/colorBG"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@+id/navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/members_list"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/empty_state" />
+
+        <TextView
+            android:id="@+id/empty_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/advent_pro"
+            android:text="Looks like You have not added anything yet"
+            android:textAlignment="viewEnd"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/add_new_fab"
+            app:layout_constraintEnd_toStartOf="@+id/add_new_fab"
+            app:layout_constraintStart_toStartOf="@+id/empty_image"
+            app:layout_constraintTop_toTopOf="@+id/add_new_fab" />
+
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

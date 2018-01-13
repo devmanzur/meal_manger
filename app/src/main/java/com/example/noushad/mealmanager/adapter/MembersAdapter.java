@@ -54,7 +54,7 @@ public class MembersAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return mItems==null?0:mItems.size();
     }
 
     private class MembersVH extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {

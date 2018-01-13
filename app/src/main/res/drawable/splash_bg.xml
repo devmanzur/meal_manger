@@ -5,10 +5,10 @@
         android:drawable="@color/colorBG"/>
 
     <item
-        android:top="214dp"
-        android:bottom="214dp"
-        android:left="68dp"
-        android:right="68dp">
+        android:top="216dp"
+        android:bottom="216dp"
+        android:left="70dp"
+        android:right="70dp">
         <bitmap
             android:gravity="fill"
             android:src="@drawable/mealmanagericon"/>

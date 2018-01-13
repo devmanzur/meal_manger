@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -87,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
     private ConstraintLayout MainContainer;
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;
+    private TextView emptyText;
+    private ImageView emptyImage;
 
 
 
@@ -228,6 +231,8 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
     }
 
     private void initializeViews() {
+        emptyText = findViewById(R.id.empty_text);
+        emptyImage = findViewById(R.id.empty_image);
         mAdView = findViewById(R.id.adView);
         mAdView.setAdListener(new ToastListener(this));
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -364,6 +369,11 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
                 mMembersList = pMembers;
                 mAdapter.addItems(pMembers);
                 setUpPieChart(pMembers);
+                if(pMembers.size()==0){
+                    showEmptyState(true);
+                }else{
+                    showEmptyState(false);
+                }
             }
         });
     }
@@ -374,6 +384,16 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
             mRecyclerView.setAdapter(mAdapter);
         } else {
             mRecyclerView.setAdapter(mAdapter);
+        }
+    }
+
+    private void showEmptyState(boolean show) {
+        if(show) {
+            emptyImage.setVisibility(View.VISIBLE);
+            emptyText.setVisibility(View.VISIBLE);
+        }else{
+            emptyImage.setVisibility(View.GONE);
+            emptyText.setVisibility(View.GONE);
         }
 
     }
