@@ -6,7 +6,6 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -75,7 +74,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements DashboardFragment.OnFragmentInteractionListener,SettingsFragment.onSettingsInteractionListener {
+public class MainActivity extends AppCompatActivity implements DashboardFragment.OnFragmentInteractionListener, SettingsFragment.onSettingsInteractionListener {
 
     private MemberListViewModel mViewModel;
     private TextView mTotalExpense;
@@ -94,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
     private ImageView emptyImage;
 
 
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -107,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
                     showInterstitial();
                     return true;
                 case R.id.nav_settings:
-                    startFragment(new SettingsFragment(),TagManager.SETTINGS_FRAGMENT);
+                    startFragment(new SettingsFragment(), TagManager.SETTINGS_FRAGMENT);
             }
             return false;
         }
@@ -150,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
 
     private void setAlarm() {
 
-        if(!SharedPrefManager.getInstance(this).isAlarmSet()) {
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, 20);
             calendar.set(Calendar.MINUTE, 15);
@@ -161,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
             SharedPrefManager.getInstance(getApplicationContext()).setAlarm();
-        }
+
     }
 
     private void setUpPieChart(List<Member> members) {
@@ -245,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.InterstitialAd));
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
-        mInterstitialAd.setAdListener(new AdListener(){
+        mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
                 startFragment(DashboardFragment.newInstance(), TagManager.DASHBOARD_FRAGMENT);
@@ -253,7 +250,6 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
 
             }
         });
-
 
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
@@ -373,9 +369,9 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
                 mMembersList = pMembers;
                 mAdapter.addItems(pMembers);
                 setUpPieChart(pMembers);
-                if(pMembers.size()==0){
+                if (pMembers.size() == 0) {
                     showEmptyState(true);
-                }else{
+                } else {
                     showEmptyState(false);
                 }
             }
@@ -392,10 +388,10 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
     }
 
     private void showEmptyState(boolean show) {
-        if(show) {
+        if (show) {
             emptyImage.setVisibility(View.VISIBLE);
             emptyText.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             emptyImage.setVisibility(View.GONE);
             emptyText.setVisibility(View.GONE);
         }
@@ -562,12 +558,12 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
 
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                                     new AlertDialog.Builder(MainActivity.this)
-                                            .setMessage("Your Data was last updated from : "+'\n'
-                                                    +'\n'+"Device :"+ device +'\n'
-                                                    +'\n' +"Date : " + dateStr)
+                                            .setMessage("Your Data was last updated from : " + '\n'
+                                                    + '\n' + "Device :" + device + '\n'
+                                                    + '\n' + "Date : " + dateStr)
                                             .setNegativeButton("CANCEL", null)
                                             .show();
-                                }else{
+                                } else {
                                     new AlertDialog.Builder(MainActivity.this)
                                             .setMessage("Your Data was last updated from : " + " On : " + dateString)
                                             .setNegativeButton("CANCEL", null)
@@ -717,7 +713,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
     }
 
     @Override
-    public void onSettingsInteraction(Uri uri) {
-
+    public void onSettingsInteraction() {
+        showClearDialog();
     }
 }

@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -47,6 +46,7 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         FloatingActionButton fabPassword = view.findViewById(R.id.fab_change_pass);
+        FloatingActionButton fabErase = view.findViewById(R.id.fab_erase_data);
         mProgressDialog = new ProgressDialog(getContext());
         fabPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +57,14 @@ public class SettingsFragment extends Fragment {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
             }
         });
+
+        fabErase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onButtonPressed();
+            }
+        });
+
         return view;
     }
 
@@ -152,9 +160,9 @@ public class SettingsFragment extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onButtonPressed() {
         if (mListener != null) {
-            mListener.onSettingsInteraction(uri);
+            mListener.onSettingsInteraction();
         }
     }
 
@@ -177,6 +185,6 @@ public class SettingsFragment extends Fragment {
 
     public interface onSettingsInteractionListener {
         // TODO: Update argument type and name
-        void onSettingsInteraction(Uri uri);
+        void onSettingsInteraction();
     }
 }
