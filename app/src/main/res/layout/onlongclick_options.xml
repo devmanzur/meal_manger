@@ -23,12 +23,13 @@
             android:layout_marginEnd="12dp"
             android:layout_marginTop="16dp"
             android:background="@android:color/transparent"
-            android:text="DONE"
+            android:text="@string/done"
             android:textColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/info_update_input"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+            android:layout_marginRight="12dp" />
 
         <EditText
             android:id="@+id/info_update_input"
@@ -42,7 +43,9 @@
             android:textColor="@color/colorText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/info_hint" />
+            app:layout_constraintTop_toBottomOf="@+id/info_hint"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="16dp" />
 
         <TextView
             android:id="@+id/info_hint"
@@ -50,10 +53,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="18dp"
             android:layout_marginTop="16dp"
-            android:text="hint"
+            android:text="@string/hint"
             android:textColor="@color/colorAccent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="18dp" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
@@ -73,12 +77,13 @@
             android:layout_marginBottom="8dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="Edit"
+            android:text="@string/edit"
             android:textColor="@color/colorAccent"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/fab_edit_user"
             app:layout_constraintStart_toEndOf="@+id/fab_edit_user"
-            app:layout_constraintTop_toTopOf="@+id/fab_edit_user" />
+            app:layout_constraintTop_toTopOf="@+id/fab_edit_user"
+            android:layout_marginLeft="16dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_edit_user"
@@ -89,7 +94,9 @@
             android:clickable="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_edit" />
+            app:srcCompat="@drawable/ic_edit"
+            android:layout_marginLeft="16dp"
+            android:focusable="true" />
 
         <TextView
             android:id="@+id/textView6"
@@ -98,12 +105,13 @@
             android:layout_marginBottom="8dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="Delete"
+            android:text="@string/delete"
             android:textColor="@color/colorAccent"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/fab_user_delete"
             app:layout_constraintStart_toEndOf="@+id/fab_user_delete"
-            app:layout_constraintTop_toTopOf="@+id/fab_user_delete" />
+            app:layout_constraintTop_toTopOf="@+id/fab_user_delete"
+            android:layout_marginLeft="16dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_user_delete"
@@ -118,7 +126,8 @@
             app:layout_constraintStart_toStartOf="@+id/fab_edit_user"
             app:layout_constraintTop_toBottomOf="@+id/fab_edit_user"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_delete" />
+            app:srcCompat="@drawable/ic_delete"
+            android:focusable="true" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

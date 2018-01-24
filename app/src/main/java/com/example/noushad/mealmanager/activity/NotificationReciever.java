@@ -25,8 +25,8 @@ public class NotificationReciever extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,NOTIFICATION_CHANNEL_ID)
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.ic_meal)
-                .setContentTitle("Your Meal Manager")
-                .setContentText("Have You Listed Your Meal Today!!")
+                .setContentTitle(context.getString(R.string.title))
+                .setContentText(context.getString(R.string.ask_to_use))
                 .setAutoCancel(true);
 
         notificationManager.notify(101, builder.build());

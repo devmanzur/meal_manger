@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -40,6 +41,10 @@ public class SettingsFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,6 +53,7 @@ public class SettingsFragment extends Fragment {
         FloatingActionButton fabPassword = view.findViewById(R.id.fab_change_pass);
         FloatingActionButton fabErase = view.findViewById(R.id.fab_erase_data);
         mProgressDialog = new ProgressDialog(getContext());
+
         fabPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

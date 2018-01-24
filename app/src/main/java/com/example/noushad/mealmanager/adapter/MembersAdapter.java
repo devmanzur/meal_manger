@@ -141,7 +141,7 @@ public class MembersAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     optionLayout.setVisibility(View.GONE);
                     mlExLayout.setVisibility(View.VISIBLE);
-                    hint.setText("Meals Today");
+                    hint.setText(R.string.today_meals);
                     mlExButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -165,7 +165,7 @@ public class MembersAdapter extends RecyclerView.Adapter {
                 public void onClick(View v) {
                     optionLayout.setVisibility(View.GONE);
                     mlExLayout.setVisibility(View.VISIBLE);
-                    hint.setText("Expense Today");
+                    hint.setText(R.string.today_expense);
                     mlExButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -225,7 +225,7 @@ public class MembersAdapter extends RecyclerView.Adapter {
                     //update user
                     optionView.setVisibility(View.GONE);
                     inputView.setVisibility(View.VISIBLE);
-                    hint.setText("NAME");
+                    hint.setText(R.string.name);
                     infoUpdateButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -259,9 +259,9 @@ public class MembersAdapter extends RecyclerView.Adapter {
             final AlertDialog.Builder builder;
             builder = new AlertDialog.Builder(mContext);
             final AlertDialog dialog = builder.create();
-            dialog.setTitle("REMOVE USER");
-            dialog.setMessage("You Are Removing " + mMember.getName());
-            dialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+            dialog.setTitle(mContext.getString(R.string.remove_user));
+            dialog.setMessage(mContext.getString(R.string.removing_confirm) + mMember.getName());
+            dialog.setButton(DialogInterface.BUTTON_POSITIVE, mContext.getString(R.string.ok), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     ((MainActivity) mContext).dbDeleteMember(mMember);
@@ -270,7 +270,7 @@ public class MembersAdapter extends RecyclerView.Adapter {
                 }
             });
 
-            dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "CANCEL", new DialogInterface.OnClickListener() {
+            dialog.setButton(DialogInterface.BUTTON_NEGATIVE, mContext.getString(R.string.cancel), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();

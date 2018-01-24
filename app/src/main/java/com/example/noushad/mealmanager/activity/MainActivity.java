@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
 
     private void clearData() {
         SharedPrefManager.getInstance(MainActivity.this).clear();
-        EventBus.getDefault().post(new UpdateEvent(0, "EMPTY"));
+        EventBus.getDefault().post(new UpdateEvent(0, getString(R.string.empty)));
         mViewModel.deleteALL();
     }
 
@@ -144,20 +144,21 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
         mViewModel = ViewModelProviders.of(this).get(MemberListViewModel.class);
         showDetails();
         setAlarm();
+
     }
 
     private void setAlarm() {
 
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, 20);
-            calendar.set(Calendar.MINUTE, 15);
-            calendar.set(Calendar.SECOND, 30);
-            Intent intent = new Intent(getApplicationContext(), NotificationReciever.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 101, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 20);
+        calendar.set(Calendar.MINUTE, 15);
+        calendar.set(Calendar.SECOND, 30);
+        Intent intent = new Intent(getApplicationContext(), NotificationReciever.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 101, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-            SharedPrefManager.getInstance(getApplicationContext()).setAlarm();
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        SharedPrefManager.getInstance(getApplicationContext()).setAlarm();
 
     }
 
@@ -304,21 +305,21 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
 
     private void showClearDialog() {
         new AlertDialog.Builder(this)
-                .setMessage("Are you sure you want to ERASE all Data?")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setMessage(R.string.erase_confirm)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         clearData();
                     }
                 })
-                .setNegativeButton("No", null)
+                .setNegativeButton(R.string.no, null)
                 .show();
     }
 
     private void showSnack(String text) {
 
         Snackbar.make(this.findViewById(R.id.container), text, Snackbar.LENGTH_LONG)
-                .setAction("CLOSE", new View.OnClickListener() {
+                .setAction(R.string.close, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
@@ -333,7 +334,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
         AlertDialog.Builder builder;
 
         builder = new AlertDialog.Builder(this);
-        builder.setTitle("New Member");
+        builder.setTitle(R.string.new_member);
 
         View viewInflated = LayoutInflater.from(this).inflate(R.layout.add_new_member, null, false);
         final EditText input = (EditText) viewInflated.findViewById(R.id.name_input);
@@ -376,6 +377,12 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
                 }
             }
         });
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+            MainContainer.setVisibility(View.VISIBLE);
+        }else{
+            MainContainer.setVisibility(View.GONE);
+
+        }
     }
 
     private void updateUI() {
@@ -441,7 +448,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUploadEvent(DataUploadedEvent event) {
-        showSnack("Data Uploaded Successfully");
+        showSnack(getString(R.string.upload_success));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -466,6 +473,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
     }
 
     public void startFragment(Fragment fragment, String tag) {
+
         MainContainer.setVisibility(View.GONE);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -484,14 +492,14 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
             getSupportFragmentManager().popBackStack();
         } else {
             new AlertDialog.Builder(this)
-                    .setMessage("Are you sure you want to exit?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    .setMessage(R.string.confirm_exit)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             MainActivity.super.onBackPressed();
                         }
                     })
-                    .setNegativeButton("No", null)
+                    .setNegativeButton(R.string.no, null)
                     .show();
         }
     }
@@ -525,25 +533,25 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
 
                     if (mode == 2) {
                         new AlertDialog.Builder(MainActivity.this)
-                                .setMessage("You are adding data from " + dateString)
-                                .setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                                .setMessage(getString(R.string.data_inserting_confirm) + dateString)
+                                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         downloadInfoFromDB();
                                     }
                                 })
-                                .setNegativeButton("CANCEL", null)
+                                .setNegativeButton(R.string.cancel, null)
                                 .show();
                     } else if (mode == 1) {
                         new AlertDialog.Builder(MainActivity.this)
-                                .setMessage("You are replacing data from " + dateString)
-                                .setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                                .setMessage(getString(R.string.replacing_confirm) + dateString)
+                                .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         uploadInfoToDB();
                                     }
                                 })
-                                .setNegativeButton("CANCEL", null)
+                                .setNegativeButton(R.string.cancel, null)
                                 .show();
 
                     } else {
@@ -558,15 +566,15 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
 
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                                     new AlertDialog.Builder(MainActivity.this)
-                                            .setMessage("Your Data was last updated from : " + '\n'
+                                            .setMessage(getString(R.string.last_updated_from) + '\n'
                                                     + '\n' + "Device :" + device + '\n'
                                                     + '\n' + "Date : " + dateStr)
-                                            .setNegativeButton("CANCEL", null)
+                                            .setNegativeButton(R.string.cancel, null)
                                             .show();
                                 } else {
                                     new AlertDialog.Builder(MainActivity.this)
-                                            .setMessage("Your Data was last updated from : " + " On : " + dateString)
-                                            .setNegativeButton("CANCEL", null)
+                                            .setMessage(getString(R.string.last_updated_from) + device + " On : " + dateString)
+                                            .setNegativeButton(R.string.cancel, null)
                                             .show();
                                 }
 

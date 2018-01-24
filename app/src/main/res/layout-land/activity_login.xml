@@ -24,7 +24,7 @@
         app:adUnitId="ca-app-pub-3940256099942544/6300978111"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageView7"></com.google.android.gms.ads.AdView>
+        app:layout_constraintStart_toEndOf="@+id/imageView7"/>
 
     <View
         android:id="@+id/view4"
@@ -35,7 +35,8 @@
         android:background="@color/colorDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textInputLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+        android:layout_marginRight="8dp" />
 
     <View
         android:id="@+id/view3"
@@ -46,7 +47,8 @@
         android:background="@color/colorDivider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textInputLayout"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        android:layout_marginRight="8dp" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout"
@@ -59,7 +61,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView7"
         app:layout_constraintTop_toBottomOf="@+id/imageView7"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="8dp">
 
         <AutoCompleteTextView
             android:id="@+id/email"
@@ -84,7 +88,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Password"
+        android:hint="@string/password"
         android:textColorHint="@color/colorAccent"
         app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
         app:layout_constraintStart_toStartOf="@+id/textInputLayout"
@@ -127,12 +131,14 @@
         android:layout_marginStart="12dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/advent_pro"
-        android:text="It Only Takes A Few Seconds To Setup"
+        android:text="@string/it_only_takes_a_few_seconds_to_setup"
         android:textColor="@color/colorBG"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="@+id/imageView7"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView7" />
+        app:layout_constraintTop_toTopOf="@+id/imageView7"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="12dp" />
 
     <TextView
         android:id="@+id/textView18"
@@ -140,7 +146,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/advent_pro"
-        android:text="Sign in or Register in a single Click"
+        android:text="@string/sign_in_or_register_in_a_single_click"
         android:textColor="@color/colorBGdark"
         app:layout_constraintEnd_toEndOf="@+id/textView17"
         app:layout_constraintStart_toStartOf="@+id/textView17"
@@ -159,7 +165,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textInputLayout2"
         app:layout_constraintTop_toBottomOf="@+id/view4"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginRight="8dp">
 
         <Button
             android:id="@+id/email_sign_in_button"
@@ -168,7 +175,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorAccent"
-            android:text="SIGN IN"
+            android:text="@string/sign_in"
             android:textColor="@color/colorBG"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/textInputLayout2"
@@ -182,7 +189,7 @@
             android:layout_marginTop="0dp"
             android:layout_weight="1"
             android:background="@color/colorYellow2"
-            android:text="REGISTER"
+            android:text="@string/register"
             android:textColor="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/email_sign_in_button"

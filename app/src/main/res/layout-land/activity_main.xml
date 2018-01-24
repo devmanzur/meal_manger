@@ -44,7 +44,8 @@
             app:cardElevation="0dp"
             app:layout_constraintBottom_toTopOf="@+id/adView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="8dp">
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/pie_chart_container"
@@ -91,7 +92,8 @@
                     app:layout_constraintTop_toTopOf="@+id/imageView"
                     app:layout_constraintVertical_bias="1.0"
                     app:rippleColor="@color/colorYellow"
-                    app:srcCompat="@drawable/meal" />
+                    app:srcCompat="@drawable/meal"
+                    android:layout_marginLeft="8dp" />
 
                 <ImageView
                     android:id="@+id/imageView"
@@ -104,7 +106,8 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:srcCompat="@color/colorAccent" />
+                    app:srcCompat="@color/colorAccent"
+                    android:layout_marginRight="82dp" />
 
                 <TextView
                     android:id="@+id/total_expense"
@@ -149,7 +152,8 @@
                     app:layout_constraintTop_toTopOf="@+id/imageView"
                     app:layout_constraintVertical_bias="1.0"
                     app:rippleColor="@color/colorYellow"
-                    app:srcCompat="@drawable/expense" />
+                    app:srcCompat="@drawable/expense"
+                    android:layout_marginLeft="16dp" />
 
                 <TextView
                     android:id="@+id/current_price"
@@ -168,7 +172,9 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toEndOf="@+id/total_meal" />
+                    app:layout_constraintStart_toEndOf="@+id/total_meal"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginLeft="8dp" />
 
             </android.support.constraint.ConstraintLayout>
 
@@ -183,7 +189,8 @@
             app:layout_constraintBottom_toTopOf="@+id/navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cardView"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="8dp">
 
         </android.support.v7.widget.RecyclerView>
 
@@ -198,7 +205,8 @@
             app:fabSize="normal"
             app:layout_constraintBottom_toTopOf="@+id/navigation"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add" />
+            app:srcCompat="@drawable/ic_add"
+            android:layout_marginRight="12dp" />
 
         <ImageView
             android:id="@+id/empty_image"
@@ -215,7 +223,9 @@
             app:layout_constraintStart_toStartOf="@+id/members_list"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/empty_state" />
+            app:srcCompat="@drawable/empty_state"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="32dp" />
 
         <TextView
             android:id="@+id/empty_text"
@@ -232,7 +242,10 @@
             app:layout_constraintBottom_toBottomOf="@+id/add_new_fab"
             app:layout_constraintEnd_toStartOf="@+id/add_new_fab"
             app:layout_constraintStart_toStartOf="@+id/empty_image"
-            app:layout_constraintTop_toTopOf="@+id/add_new_fab" />
+            app:layout_constraintTop_toTopOf="@+id/add_new_fab"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="8dp"
+            android:gravity="end" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

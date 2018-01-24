@@ -107,15 +107,15 @@ public class DashboardFragment extends Fragment {
             public void onClick(View v) {
                 if (loggedIn) {
                     new AlertDialog.Builder(getContext())
-                            .setMessage("You are about to sign out")
-                            .setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                            .setMessage(R.string.signin_out)
+                            .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     signOutUser();
-                                    signInButton.setText("SIGN IN");
+                                    signInButton.setText(R.string.sign_in);
                                 }
                             })
-                            .setNegativeButton("CANCEL", null)
+                            .setNegativeButton(R.string.cancel, null)
                             .show();
                 } else {
                     showLoginScreen();
@@ -140,9 +140,9 @@ public class DashboardFragment extends Fragment {
 
     private void setButtonText() {
         if (loggedIn) {
-            signInButton.setText("SIGN OUT");
+            signInButton.setText(R.string.sign_out);
         } else {
-            signInButton.setText("SIGN IN");
+            signInButton.setText(R.string.sign_in);
         }
     }
 
@@ -156,8 +156,8 @@ public class DashboardFragment extends Fragment {
 
         if (loggedIn) {
             new AlertDialog.Builder(getContext())
-                    .setMessage("You are connecting to server")
-                    .setPositiveButton("CONFIRM", new DialogInterface.OnClickListener() {
+                    .setMessage(R.string.connecting_confirm)
+                    .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if (mListener != null) {
@@ -166,7 +166,7 @@ public class DashboardFragment extends Fragment {
                             }
                         }
                     })
-                    .setNegativeButton("CANCEL", null)
+                    .setNegativeButton(R.string.cancel, null)
                     .show();
 
         } else {
@@ -177,7 +177,7 @@ public class DashboardFragment extends Fragment {
     private void showLoginScreen() {
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
-        Toast.makeText(getContext(), "You Need To Login", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.need_login, Toast.LENGTH_SHORT).show();
     }
 
     @Override

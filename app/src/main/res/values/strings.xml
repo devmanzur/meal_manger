@@ -22,4 +22,64 @@
         completions."
     </string>
     <string name="InterstitialAd">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="signing_in">Signing In User</string>
+    <string name="registering">Registering User</string>
+    <string name="email_unvarified">You Haven\'t Verified Your Email Address</string>
+    <string name="check_email">Check your Email to complete the process</string>
+    <string name="close">CLOSE</string>
+    <string name="empty">EMPTY</string>
+    <string name="erase_confirm">Are you sure you want to ERASE all Data?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="new_member">New Member</string>
+    <string name="upload_success">Data Uploaded Successfully</string>
+    <string name="confirm_exit">Are you sure you want to exit?</string>
+    <string name="data_inserting_confirm">You are adding data from</string>
+    <string name="confirm">CONFIRM</string>
+    <string name="cancel">CANCEL</string>
+    <string name="replacing_confirm">You are replacing data from</string>
+    <string name="last_updated_from">Your Data was last updated from :</string>
+    <string name="title">Your Meal Manager</string>
+    <string name="ask_to_use">Have You Listed Your Meal Today!!</string>
+    <string name="today_meals">Meals Today</string>
+    <string name="today_expense">Expense Today</string>
+    <string name="name">NAME</string>
+    <string name="remove_user">REMOVE USER</string>
+    <string name="removing_confirm">You Are Removing</string>
+    <string name="ok">OK</string>
+    <string name="signin_out">You are about to sign out</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="sign_out">SIGN OUT</string>
+    <string name="connecting_confirm">You are connecting to server</string>
+    <string name="need_login">You Need To Login</string>
+    <string name="password">Password</string>
+    <string name="it_only_takes_a_few_seconds_to_setup">It Only Takes A Few Seconds To Setup</string>
+    <string name="sign_in_or_register_in_a_single_click">Sign in or Register in a single Click</string>
+    <string name="register">REGISTER</string>
+    <string name="looks_like_you_have_not_added_anything_yet">Looks like You have not added anything yet</string>
+    <string name="check_last_update">Check Last Update</string>
+    <string name="sync_your_data_with_our_free_servers">Sync Your Data With Our Free Servers</string>
+    <string name="switching_dialog">When you switch between different devices you dont have to worry about losing important data . save and retrieve data on a single click</string>
+    <string name="download">Download</string>
+    <string name="upload">Upload</string>
+    <string name="member_since">member since :</string>
+    <string name="last_shopping">last shopping :</string>
+    <string name="none">none</string>
+    <string name="total_meals">Total Meals</string>
+    <string name="total_spent">Total Spent</string>
+    <string name="shopping_history">Shopping History</string>
+    <string name="meal_history">Meal History</string>
+    <string name="change_password">Change Password</string>
+    <string name="easily_maintain_your_privacy_and_settings">Easily maintain your Privacy And Settings</string>
+    <string name="manage_or_change_your_settings_here">Manage or Change Your Settings Here</string>
+    <string name="erase_data">Erase Data</string>
+    <string name="done">DONE</string>
+    <string name="hint">hint</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="email">Email</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+
+
 </resources>

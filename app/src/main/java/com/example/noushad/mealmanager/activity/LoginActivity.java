@@ -31,10 +31,6 @@ public class LoginActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     private AdView mAdView;
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
@@ -122,13 +118,13 @@ public class LoginActivity extends AppCompatActivity {
 
             if (command == COMMAND_SIGNIN) {
                 //
-                mProgressDialog.setMessage("Signing In User");
+                mProgressDialog.setMessage(getString(R.string.signing_in));
                 mProgressDialog.show();
                 signinUser(email, password);
 
             } else if (command == COMMAND_SIGNUP) {
                 //
-                mProgressDialog.setMessage("Registering User");
+                mProgressDialog.setMessage(getString(R.string.registering));
                 mProgressDialog.show();
                 registerUser(email, password);
             }
@@ -147,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPrefManager.getInstance(LoginActivity.this).setUserId(user.getUid());
                         LoginActivity.this.finish();
                     }else{
-                        showSnack("You Haven't Verified Your Email Address");
+                        showSnack(getString(R.string.email_unvarified));
                         mAuth.signOut();
                     }
 
@@ -166,7 +162,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     FirebaseUser user = mAuth.getCurrentUser();
                         user.sendEmailVerification();
-                    showSnack("Check your Email to complete the process");
+                    showSnack(getString(R.string.check_email));
                 } else {
                     showSnack(task.getException().getLocalizedMessage());
                 }
@@ -178,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
     private void showSnack(String text) {
 
         Snackbar.make(this.findViewById(R.id.login_form), text, Snackbar.LENGTH_LONG)
-                .setAction("CLOSE", new View.OnClickListener() {
+                .setAction(R.string.close, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
@@ -196,7 +192,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 8;
     }
 
 
