@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.noushad.mealmanager.R;
 import com.example.noushad.mealmanager.activity.MainActivity;
@@ -54,7 +55,7 @@ public class MembersAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return mItems==null?0:mItems.size();
+        return mItems == null ? 0 : mItems.size();
     }
 
     private class MembersVH extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -83,7 +84,7 @@ public class MembersAdapter extends RecyclerView.Adapter {
 
         public void updateUI(final Member member) {
             mMember = member;
-            firstLetter.setText(String.valueOf(member.getName().toUpperCase().charAt(0)));
+//            firstLetter.setText(String.valueOf(member.getName().toUpperCase().charAt(0)));
             nameText.setText(member.getName());
             mealCountText.setText(String.valueOf(member.getTotalMeal()));
             totalSpentText.setText(String.valueOf(member.getTotalMoneySpent()));
@@ -125,7 +126,6 @@ public class MembersAdapter extends RecyclerView.Adapter {
             final AlertDialog dialog = builder.create();
             dialog.setTitle(mMember.getName().toUpperCase());
 
-
             View viewInflated = LayoutInflater.from(mContext).inflate(R.layout.onclick_options, null, false);
             FloatingActionButton fabMeal = viewInflated.findViewById(R.id.fab_meal);
             FloatingActionButton fabExpense = viewInflated.findViewById(R.id.fab_expense);
@@ -149,7 +149,7 @@ public class MembersAdapter extends RecyclerView.Adapter {
                                 float value = Float.parseFloat(mlExInput.getText().toString());
                                 pMember.addMeal(value);
                                 ((MainActivity) mContext).dbUpdateMember(pMember);
-                                SharedPrefManager.getInstance(mContext).setTotalMeals(value,0);
+                                SharedPrefManager.getInstance(mContext).setTotalMeals(value, 0);
                                 notifyDataSetChanged();
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -170,13 +170,15 @@ public class MembersAdapter extends RecyclerView.Adapter {
                         @Override
                         public void onClick(View v) {
                             try {
-                                int value = Integer.parseInt(mlExInput.getText().toString());
-                                pMember.addTotalMoney(value);
-                                ((MainActivity) mContext).dbUpdateMember(pMember);
-                                SharedPrefManager.getInstance(mContext).setTotalExpense(value,0);
-                                notifyDataSetChanged();
+                                if (!mlExInput.getText().toString().matches("")) {
+                                    int value = Integer.parseInt(mlExInput.getText().toString());
+                                    pMember.addTotalMoney(value);
+                                    ((MainActivity) mContext).dbUpdateMember(pMember);
+                                    SharedPrefManager.getInstance(mContext).setTotalExpense(value, 0);
+                                    notifyDataSetChanged();
+                                }
                             } catch (Exception e) {
-
+                                e.printStackTrace();
                             }
                             dialog.dismiss();
                         }
@@ -230,10 +232,16 @@ public class MembersAdapter extends RecyclerView.Adapter {
                         @Override
                         public void onClick(View v) {
                             try {
+
                                 String name = infoUpdateInput.getText().toString();
-                                pMember.setName(name);
-                                ((MainActivity) mContext).dbUpdateMember(pMember);
-                                notifyDataSetChanged();
+                                if (!name.matches("")) {
+                                    pMember.setName(name);
+                                    ((MainActivity) mContext).dbUpdateMember(pMember);
+                                    notifyDataSetChanged();
+                                } else {
+                                    Toast.makeText(mContext, "No Name Entered", Toast.LENGTH_SHORT).show();
+                                }
+
                             } catch (Exception e) {
 
                             }

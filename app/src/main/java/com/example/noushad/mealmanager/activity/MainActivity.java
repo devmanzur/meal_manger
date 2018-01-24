@@ -344,10 +344,14 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String name = input.getText().toString();
-                Member member = new Member(name);
-                mAdapter.add(member);
-                dbAddMember(member);
-                dialog.dismiss();
+                if(!name.matches("")) {
+                    Member member = new Member(name);
+                    mAdapter.add(member);
+                    dbAddMember(member);
+                    dialog.dismiss();
+                }else{
+                    Toast.makeText(MainActivity.this,"No Name Entered",Toast.LENGTH_SHORT).show();
+                }
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
