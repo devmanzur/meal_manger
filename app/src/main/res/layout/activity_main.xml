@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorBG"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -35,11 +35,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="4dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:cardElevation="0dp"
+            app:cardCornerRadius="32dp"
+            app:cardElevation="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -191,6 +190,7 @@
             android:id="@+id/adView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             ads:adSize="SMART_BANNER"
             ads:adUnitId="@string/banner_ad_unit_id"
             ads:layout_constraintEnd_toEndOf="parent"
@@ -209,20 +209,6 @@
             app:layout_constraintTop_toBottomOf="@+id/adView">
 
         </android.support.v7.widget.RecyclerView>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/add_new_fab"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:clickable="true"
-            app:backgroundTint="@color/colorPrimary"
-            app:fabSize="normal"
-            app:layout_constraintBottom_toBottomOf="@+id/members_list"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_add" />
 
         <ImageView
             android:id="@+id/empty_image"
@@ -258,6 +244,51 @@
             app:layout_constraintEnd_toStartOf="@+id/add_new_fab"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/empty_image"
+            app:layout_constraintTop_toTopOf="@+id/add_new_fab" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_daily_bazar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:clickable="true"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toBottomOf="@+id/empty_image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_bajar" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add_new_fab"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            app:backgroundTint="@color/colorPrimary"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@+id/members_list"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/adView"
+            app:srcCompat="@drawable/ic_add" />
+
+        <TextView
+            android:id="@+id/textView23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/advent_pro"
+            android:padding="8dp"
+            android:text="new member"
+            android:shadowColor="@color/colorBG"
+            android:shadowRadius="64"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/add_new_fab"
+            app:layout_constraintEnd_toStartOf="@+id/add_new_fab"
             app:layout_constraintTop_toTopOf="@+id/add_new_fab" />
 
     </android.support.constraint.ConstraintLayout>

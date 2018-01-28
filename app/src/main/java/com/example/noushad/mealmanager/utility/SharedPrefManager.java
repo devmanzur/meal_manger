@@ -16,8 +16,6 @@ public class SharedPrefManager {
     private static final String KEY_ALARM = "com.example.noushad.mealmanager.alarm";
     private static SharedPrefManager mInstance;
     private static Context sContext;
-
-
     private static final String SHARED_PREF_NAME = "com.example.noushad.mealmanager";
     private static final String KEY_TOTAL_EXPENSE = "com.example.noushad.mealmanager.total_expense";
     private static final String KEY_TOTAL_MEALS = "com.example.noushad.mealmanager.total_meals";

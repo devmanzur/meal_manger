@@ -84,7 +84,7 @@ public class MembersAdapter extends RecyclerView.Adapter {
 
         public void updateUI(final Member member) {
             mMember = member;
-//            firstLetter.setText(String.valueOf(member.getName().toUpperCase().charAt(0)));
+            firstLetter.setText(String.valueOf(member.getName().toUpperCase().charAt(0)));
             nameText.setText(member.getName());
             mealCountText.setText(String.valueOf(member.getTotalMeal()));
             totalSpentText.setText(String.valueOf(member.getTotalMoneySpent()));
@@ -174,7 +174,10 @@ public class MembersAdapter extends RecyclerView.Adapter {
                                     int value = Integer.parseInt(mlExInput.getText().toString());
                                     pMember.addTotalMoney(value);
                                     ((MainActivity) mContext).dbUpdateMember(pMember);
-                                    SharedPrefManager.getInstance(mContext).setTotalExpense(value, 0);
+
+//this line below needs to move somewhere else and used via a different button.
+
+                                    // SharedPrefManager.getInstance(mContext).setTotalExpense(value, 0);
                                     notifyDataSetChanged();
                                 }
                             } catch (Exception e) {

@@ -22,6 +22,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
     private FloatingActionButton fab;
     private FloatingActionButton fabMealInfo;
     private FloatingActionButton fabExpenseInfo;
+    private FloatingActionButton fabdailyExpense;
     private ConstraintLayout MainContainer;
     private AdView mAdView;
     private InterstitialAd mInterstitialAd;
@@ -239,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
         mAdView.setAdListener(new ToastListener(this));
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-
+        fabdailyExpense = findViewById(R.id.fab_daily_bazar);
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId(getString(R.string.InterstitialAd));
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
@@ -251,7 +253,6 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
 
             }
         });
-
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -301,6 +302,47 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
                 showSnack("Total Expense : " + String.valueOf(expense));
             }
         });
+
+        fabdailyExpense.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTodayBazarDialog();
+            }
+        });
+
+    }
+
+    private void showTodayBazarDialog() {
+        AlertDialog.Builder builder;
+
+        builder = new AlertDialog.Builder(this);
+        builder.setTitle("Expense Today");
+
+        View viewInflated = LayoutInflater.from(this).inflate(R.layout.add_new_member, null, false);
+        final EditText input = (EditText) viewInflated.findViewById(R.id.name_input);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        builder.setView(viewInflated);
+
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String name = input.getText().toString();
+                if (!name.matches("")) {
+                    int value = Integer.parseInt(name);
+                    SharedPrefManager.getInstance(MainActivity.this).setTotalExpense(value, 0);
+                } else {
+                    Toast.makeText(MainActivity.this, "No Value Inserted!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 
     private void showClearDialog() {
@@ -344,13 +386,13 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String name = input.getText().toString();
-                if(!name.matches("")) {
+                if (!name.matches("")) {
                     Member member = new Member(name);
                     mAdapter.add(member);
                     dbAddMember(member);
                     dialog.dismiss();
-                }else{
-                    Toast.makeText(MainActivity.this,"No Name Entered",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "No Name Entered", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -383,7 +425,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
         });
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             MainContainer.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             MainContainer.setVisibility(View.GONE);
 
         }
