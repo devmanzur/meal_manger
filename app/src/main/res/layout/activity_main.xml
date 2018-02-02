@@ -25,6 +25,8 @@
             android:id="@+id/navigation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:paddingEnd="8dp"
+            android:paddingRight="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -37,8 +39,7 @@
             android:layout_marginEnd="4dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:cardCornerRadius="32dp"
-            app:cardElevation="10dp"
+            app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -190,11 +191,9 @@
             android:id="@+id/adView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             ads:adSize="SMART_BANNER"
             ads:adUnitId="@string/banner_ad_unit_id"
             ads:layout_constraintEnd_toEndOf="parent"
-            ads:layout_constraintHorizontal_bias="0.0"
             ads:layout_constraintStart_toStartOf="parent"
             ads:layout_constraintTop_toBottomOf="@+id/cardView" />
 
@@ -219,7 +218,12 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="@color/colorBG"
-            android:visibility="gone"
+            android:paddingEnd="32dp"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp"
+            android:paddingStart="32dp"
+            android:paddingTop="32dp"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/members_list"
@@ -232,19 +236,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
             android:fontFamily="@font/advent_pro"
             android:gravity="end"
             android:text="@string/looks_like_you_have_not_added_anything_yet"
-            android:textAlignment="textEnd"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/add_new_fab"
-            app:layout_constraintEnd_toStartOf="@+id/add_new_fab"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/empty_image"
-            app:layout_constraintTop_toTopOf="@+id/add_new_fab" />
+            android:textAlignment="center"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/members_list"
+            app:layout_constraintEnd_toStartOf="@+id/fab_daily_bazar"
+            app:layout_constraintStart_toStartOf="@+id/empty_image" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_daily_bazar"
@@ -257,39 +258,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/empty_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_bajar" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/add_new_fab"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:clickable="true"
-            app:backgroundTint="@color/colorPrimary"
-            app:fabSize="normal"
-            app:layout_constraintBottom_toTopOf="@+id/members_list"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/adView"
-            app:srcCompat="@drawable/ic_add" />
-
-        <TextView
-            android:id="@+id/textView23"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/advent_pro"
-            android:padding="8dp"
-            android:text="new member"
-            android:shadowColor="@color/colorBG"
-            android:shadowRadius="64"
-            android:textColor="@color/colorAccent"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/add_new_fab"
-            app:layout_constraintEnd_toStartOf="@+id/add_new_fab"
-            app:layout_constraintTop_toTopOf="@+id/add_new_fab" />
 
     </android.support.constraint.ConstraintLayout>
 

@@ -39,7 +39,7 @@ import com.example.noushad.mealmanager.event.DataUploadedEvent;
 import com.example.noushad.mealmanager.event.ErrorEvent;
 import com.example.noushad.mealmanager.event.UpdateEvent;
 import com.example.noushad.mealmanager.fragment.DashboardFragment;
-import com.example.noushad.mealmanager.fragment.InforamtionFragment;
+import com.example.noushad.mealmanager.fragment.InformationFragment;
 import com.example.noushad.mealmanager.fragment.SettingsFragment;
 import com.example.noushad.mealmanager.model.Member;
 import com.example.noushad.mealmanager.utility.FirebaseService;
@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
     private MembersAdapter mAdapter;
-    private FloatingActionButton fab;
     private FloatingActionButton fabMealInfo;
     private FloatingActionButton fabExpenseInfo;
     private FloatingActionButton fabdailyExpense;
@@ -103,8 +102,11 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.nav_dashboard:
                     showInterstitial();
+                    return true;
+                case R.id.nav_add_new:
+                    showAddNewDialog();
                     return true;
                 case R.id.nav_settings:
                     startFragment(new SettingsFragment(), TagManager.SETTINGS_FRAGMENT);
@@ -260,16 +262,9 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
         mLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        fab = findViewById(R.id.add_new_fab);
         mTotalExpense = findViewById(R.id.total_expense);
         mTotalMeals = findViewById(R.id.total_meal);
         mMealPrice = findViewById(R.id.current_price);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAddNewDialog();
-            }
-        });
         fabMealInfo = findViewById(R.id.floatingActionButton2);
         fabExpenseInfo = findViewById(R.id.floatingActionButton);
 
@@ -515,7 +510,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
     }
 
     public void startDetailFragment(int pId) {
-        startFragment(InforamtionFragment.newInstance(pId), TagManager.INFO_FRAGMENT);
+        startFragment(InformationFragment.newInstance(pId), TagManager.INFO_FRAGMENT);
     }
 
     public void startFragment(Fragment fragment, String tag) {

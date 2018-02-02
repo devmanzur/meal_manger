@@ -88,7 +88,7 @@ public class MembersAdapter extends RecyclerView.Adapter {
             nameText.setText(member.getName());
             mealCountText.setText(String.valueOf(member.getTotalMeal()));
             totalSpentText.setText(String.valueOf(member.getTotalMoneySpent()));
-            //based on condition
+
             int spent = member.getTotalMoneySpent();
             double mealPrice = SharedPrefManager.getInstance(mContext).getCurrentMealPrice();
             double cost = member.getTotalMeal() * mealPrice;

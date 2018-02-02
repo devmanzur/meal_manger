@@ -25,7 +25,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.text.DateFormat;
 import java.util.Locale;
 
-public class InforamtionFragment extends Fragment {
+public class InformationFragment extends Fragment {
 
     private static final String ARG_ID = "com.example.noushad.mealmanager.member_id";
 
@@ -43,12 +43,12 @@ public class InforamtionFragment extends Fragment {
     private MealAdapter mMealAdapter;
     private BazarAdapter mBazarAdapter;
 
-    public InforamtionFragment() {
+    public InformationFragment() {
         // Required empty public constructor
     }
 
-    public static InforamtionFragment newInstance(int id) {
-        InforamtionFragment fragment = new InforamtionFragment();
+    public static InformationFragment newInstance(int id) {
+        InformationFragment fragment = new InformationFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_ID, id);
         fragment.setArguments(args);
