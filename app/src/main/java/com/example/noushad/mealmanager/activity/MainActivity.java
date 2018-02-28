@@ -147,8 +147,9 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
         initializeViews();
         mViewModel = ViewModelProviders.of(this).get(MemberListViewModel.class);
         showDetails();
-        setAlarm();
-
+        if (!SharedPrefManager.getInstance(this).isAlarmSet()) {
+            setAlarm();
+        }
     }
 
     private void setAlarm() {
@@ -409,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements DashboardFragment
             @Override
             public void onChanged(@Nullable List<Member> pMembers) {
                 mMembersList = pMembers;
-                mAdapter.addItems(pMembers);
+                mAdapter.addAllItems(pMembers);
                 setUpPieChart(pMembers);
                 if (pMembers.size() == 0) {
                     showEmptyState(true);

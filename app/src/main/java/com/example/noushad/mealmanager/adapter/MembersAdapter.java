@@ -49,17 +49,24 @@ public class MembersAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Member member = mItems.get(position);
-        ((MembersVH) holder).updateUI(member);
+
+        if((position==mItems.size()) && (mItems.size()>1)){
+            ((MembersVH) holder).updateUI(null);
+        }else if(mItems.size()>0){
+            Member member = mItems.get(position);
+            ((MembersVH) holder).updateUI(member);
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return mItems == null ? 0 : mItems.size();
+        return mItems == null ? 0 : mItems.size()+1; // to add an extra item in the end
     }
 
     private class MembersVH extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
+        private ConstraintLayout mContainer;
         private TextView firstLetter;
         private TextView nameText;
         private TextView mealCountText;
@@ -78,46 +85,51 @@ public class MembersAdapter extends RecyclerView.Adapter {
             statusText = v.findViewById(R.id.member_finance_status);
             indicator = v.findViewById(R.id.status_indicator);
             editButton = v.findViewById(R.id.edit_member_button);
+            mContainer = v.findViewById(R.id.member_item_container);
             v.setOnClickListener(this);
             v.setOnLongClickListener(this);
         }
 
         public void updateUI(final Member member) {
-            mMember = member;
-            firstLetter.setText(String.valueOf(member.getName().toUpperCase().charAt(0)));
-            nameText.setText(member.getName());
-            mealCountText.setText(String.valueOf(member.getTotalMeal()));
-            totalSpentText.setText(String.valueOf(member.getTotalMoneySpent()));
+            if(member!=null) {
+                mMember = member;
+                firstLetter.setText(String.valueOf(member.getName().toUpperCase().charAt(0)));
+                nameText.setText(member.getName());
+                mealCountText.setText(String.valueOf(member.getTotalMeal()));
+                totalSpentText.setText(String.valueOf(member.getTotalMoneySpent()));
 
-            int spent = member.getTotalMoneySpent();
-            double mealPrice = SharedPrefManager.getInstance(mContext).getCurrentMealPrice();
-            double cost = member.getTotalMeal() * mealPrice;
+                int spent = member.getTotalMoneySpent();
+                double mealPrice = SharedPrefManager.getInstance(mContext).getCurrentMealPrice();
+                double cost = member.getTotalMeal() * mealPrice;
 
-            if (spent > cost) {
-                indicator.setImageResource(R.drawable.ic_positive_indicator);
-                statusText.setTextColor(mContext.getResources().getColor(R.color.colorPos));
-                statusText.setText(String.valueOf(Math.round(spent - cost)));
-            } else if (spent < cost) {
-                indicator.setImageResource(R.drawable.ic_negative_indicator);
-                statusText.setTextColor(mContext.getResources().getColor(R.color.colorNeg));
-                statusText.setText(String.valueOf(Math.round(cost - spent)));
-            } else {
-                indicator.setImageResource(R.drawable.ic_equal_indicator);
-                statusText.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
-                statusText.setText("0");
-            }
-            editButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showLongClickDialog(member);
+                if (spent > cost) {
+                    indicator.setImageResource(R.drawable.ic_positive_indicator);
+                    statusText.setTextColor(mContext.getResources().getColor(R.color.colorPos));
+                    statusText.setText(String.valueOf(Math.round(spent - cost)));
+                } else if (spent < cost) {
+                    indicator.setImageResource(R.drawable.ic_negative_indicator);
+                    statusText.setTextColor(mContext.getResources().getColor(R.color.colorNeg));
+                    statusText.setText(String.valueOf(Math.round(cost - spent)));
+                } else {
+                    indicator.setImageResource(R.drawable.ic_equal_indicator);
+                    statusText.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
+                    statusText.setText("0");
                 }
-            });
-
+                editButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showLongClickDialog(member);
+                    }
+                });
+            }else{
+                mContainer.setVisibility(View.INVISIBLE);
+            }
         }
 
         @Override
         public void onClick(View v) {
-            showClickDialog(mMember);
+            if (mMember != null)
+                showClickDialog(mMember);
         }
 
         private void showClickDialog(final Member pMember) {
@@ -296,7 +308,7 @@ public class MembersAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    public void addItems(List<Member> members) {
+    public void addAllItems(List<Member> members) {
         this.mItems = members;
         notifyDataSetChanged();
     }

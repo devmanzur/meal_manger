@@ -64,7 +64,7 @@ public class Member {
 
     public void addMeal(float meal) {
         this.totalMeal += meal;
-        meals.add(new Meal(new Date(),meal));
+        meals.add(new Meal(new Date(), meal));
     }
 
     public void setTotalMoneySpent(int totalMoneySpent) {
@@ -120,5 +120,19 @@ public class Member {
 
     public void setCreationDate(Date pCreationDate) {
         creationDate = pCreationDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Member//==================================" +
+                ", Name='" + name + '\'' +
+                "=========================================" +
+                ", Total Meal=" + totalMeal +
+                ", Total Money Spent=" + totalMoneySpent +
+                ", Meals=" + meals +
+                ", Bazars=" + bazars +
+                ", Last Bazar Date=" + lastBazarDate +
+
+                "//=========================================";
     }
 }
