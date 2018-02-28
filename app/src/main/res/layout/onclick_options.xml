@@ -22,10 +22,10 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:clickable="true"
+            app:fabSize="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_meal"
-            android:layout_marginLeft="16dp" />
+            app:srcCompat="@drawable/ic_meal" />
 
         <TextView
             android:id="@+id/textView2"
@@ -61,10 +61,10 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:clickable="true"
+            app:fabSize="normal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fab_meal"
-            app:srcCompat="@drawable/ic_bajar"
-            android:layout_marginLeft="16dp" />
+            app:srcCompat="@drawable/ic_bajar" />
 
         <TextView
             android:id="@+id/textView4"
@@ -86,11 +86,11 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:clickable="true"
+            app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fab_expense"
-            app:srcCompat="@drawable/ic_person"
-            android:layout_marginLeft="16dp" />
+            app:srcCompat="@drawable/ic_person" />
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout

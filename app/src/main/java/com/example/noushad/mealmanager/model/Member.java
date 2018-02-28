@@ -124,15 +124,14 @@ public class Member {
 
     @Override
     public String toString() {
-        return "Member//==================================" +
-                ", Name='" + name + '\'' +
+        return "Your Monthly Meal Report : " +'\n'+
                 "=========================================" +
-                ", Total Meal=" + totalMeal +
-                ", Total Money Spent=" + totalMoneySpent +
-                ", Meals=" + meals +
-                ", Bazars=" + bazars +
-                ", Last Bazar Date=" + lastBazarDate +
-
-                "//=========================================";
+                " Name='" + name + '\'' +'\n'+
+                "=========================================" +'\n'+
+                " Total Meal : " + totalMeal +'\n'+
+                " Total Money Spent : " + totalMoneySpent +'\n'+
+                " Last Bazar Date : " + lastBazarDate +'\n'+
+                "=========================================="
+                ;
     }
 }

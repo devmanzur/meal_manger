@@ -2,6 +2,7 @@ package com.example.noushad.mealmanager.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,9 +52,9 @@ public class MembersAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        if((position==mItems.size()) && (mItems.size()>1)){
+        if ((position == mItems.size()) && (mItems.size() > 1)) {
             ((MembersVH) holder).updateUI(null);
-        }else if(mItems.size()>0){
+        } else if (mItems.size() > 0) {
             Member member = mItems.get(position);
             ((MembersVH) holder).updateUI(member);
         }
@@ -61,7 +63,7 @@ public class MembersAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return mItems == null ? 0 : mItems.size()+1; // to add an extra item in the end
+        return mItems == null ? 0 : mItems.size() + 1; // to add an extra item in the end
     }
 
     private class MembersVH extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -75,6 +77,8 @@ public class MembersAdapter extends RecyclerView.Adapter {
         private ImageView indicator;
         private Member mMember;
         private ImageButton editButton;
+        private String gainStatus;
+        private float mMealPrice;
 
         public MembersVH(View v) {
             super(v);
@@ -91,7 +95,7 @@ public class MembersAdapter extends RecyclerView.Adapter {
         }
 
         public void updateUI(final Member member) {
-            if(member!=null) {
+            if (member != null) {
                 mMember = member;
                 firstLetter.setText(String.valueOf(member.getName().toUpperCase().charAt(0)));
                 nameText.setText(member.getName());
@@ -99,18 +103,21 @@ public class MembersAdapter extends RecyclerView.Adapter {
                 totalSpentText.setText(String.valueOf(member.getTotalMoneySpent()));
 
                 int spent = member.getTotalMoneySpent();
-                double mealPrice = SharedPrefManager.getInstance(mContext).getCurrentMealPrice();
-                double cost = member.getTotalMeal() * mealPrice;
+                mMealPrice = SharedPrefManager.getInstance(mContext).getCurrentMealPrice();
+                double cost = member.getTotalMeal() * mMealPrice;
 
                 if (spent > cost) {
+                    gainStatus = "You Will Get Tk : ";
                     indicator.setImageResource(R.drawable.ic_positive_indicator);
                     statusText.setTextColor(mContext.getResources().getColor(R.color.colorPos));
                     statusText.setText(String.valueOf(Math.round(spent - cost)));
                 } else if (spent < cost) {
+                    gainStatus = "You Will Pay Tk : ";
                     indicator.setImageResource(R.drawable.ic_negative_indicator);
                     statusText.setTextColor(mContext.getResources().getColor(R.color.colorNeg));
                     statusText.setText(String.valueOf(Math.round(cost - spent)));
                 } else {
+                    gainStatus = "You Are Level : ";
                     indicator.setImageResource(R.drawable.ic_equal_indicator);
                     statusText.setTextColor(mContext.getResources().getColor(R.color.colorAccent));
                     statusText.setText("0");
@@ -121,7 +128,7 @@ public class MembersAdapter extends RecyclerView.Adapter {
                         showLongClickDialog(member);
                     }
                 });
-            }else{
+            } else {
                 mContainer.setVisibility(View.INVISIBLE);
             }
         }
@@ -229,14 +236,16 @@ public class MembersAdapter extends RecyclerView.Adapter {
             dialog.setTitle(mMember.getName().toUpperCase());
 
             View viewInflated = LayoutInflater.from(mContext).inflate(R.layout.onlongclick_options, null, false);
-            FloatingActionButton fabEdit = viewInflated.findViewById(R.id.fab_edit_user);
-            FloatingActionButton fabDelete = viewInflated.findViewById(R.id.fab_user_delete);
-            final ConstraintLayout optionView = viewInflated.findViewById(R.id.long_options_container);
+            LinearLayout userEdit = viewInflated.findViewById(R.id.linearLayout_user_edit);
+            LinearLayout userDelete = viewInflated.findViewById(R.id.linearLayout_user_delete);
+            LinearLayout userShare = viewInflated.findViewById(R.id.linearLayout_user_share);
+            final LinearLayout optionView = viewInflated.findViewById(R.id.long_options_container);
             final ConstraintLayout inputView = viewInflated.findViewById(R.id.long_input_container);
             final EditText infoUpdateInput = viewInflated.findViewById(R.id.info_update_input);
             final Button infoUpdateButton = viewInflated.findViewById(R.id.info_update_button);
             final TextView hint = viewInflated.findViewById(R.id.info_hint);
-            fabEdit.setOnClickListener(new View.OnClickListener() {
+
+            userEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //update user
@@ -266,12 +275,29 @@ public class MembersAdapter extends RecyclerView.Adapter {
                 }
             });
 
-            fabDelete.setOnClickListener(new View.OnClickListener() {
+            userDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //delete user
                     showDeleteDialog();
                     dialog.dismiss();
+                }
+            });
+
+            userShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    String text = mMember.toString() + '\n'
+                            + "Price Per Meal : Tk " + Math.round(mMealPrice) + '\n'
+                            +gainStatus + statusText.getText().toString() + '\n' +
+                            "===========================================";
+
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+                    sendIntent.setType("text/plain");
+                    mContext.startActivity(sendIntent);
                 }
             });
             dialog.setView(viewInflated);
