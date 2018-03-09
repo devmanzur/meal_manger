@@ -122,6 +122,8 @@ public class Member {
         creationDate = pCreationDate;
     }
 
+
+
     @Override
     public String toString() {
         return "Your Monthly Meal Report : " +'\n'+
@@ -130,7 +132,6 @@ public class Member {
                 "=========================================" +'\n'+
                 " Total Meal : " + totalMeal +'\n'+
                 " Total Money Spent : " + totalMoneySpent +'\n'+
-                " Last Bazar Date : " + lastBazarDate +'\n'+
                 "=========================================="
                 ;
     }

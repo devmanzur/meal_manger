@@ -42,7 +42,9 @@
             app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="4dp">
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/pie_chart_container"
@@ -202,6 +204,8 @@
             android:id="@+id/members_list"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:paddingBottom="72dp"
             app:layout_constraintBottom_toTopOf="@+id/navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -214,16 +218,13 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:background="@color/colorBG"
             android:paddingEnd="32dp"
             android:paddingLeft="32dp"
             android:paddingRight="32dp"
             android:paddingStart="32dp"
             android:paddingTop="32dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/members_list"
@@ -235,17 +236,17 @@
             android:id="@+id/empty_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
             android:fontFamily="@font/advent_pro"
             android:gravity="end"
             android:text="@string/looks_like_you_have_not_added_anything_yet"
             android:textAlignment="center"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/members_list"
-            app:layout_constraintEnd_toStartOf="@+id/fab_daily_bazar"
-            app:layout_constraintStart_toStartOf="@+id/empty_image" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/empty_image"
+            app:layout_constraintTop_toTopOf="@+id/empty_image" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_daily_bazar"
@@ -257,7 +258,8 @@
             app:fabSize="normal"
             app:layout_constraintBottom_toBottomOf="@+id/empty_image"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_bajar" />
+            app:srcCompat="@drawable/ic_bajar"
+            android:layout_marginRight="8dp" />
 
     </android.support.constraint.ConstraintLayout>
 

@@ -197,10 +197,13 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
+            android:clipToPadding="false"
+            android:paddingBottom="72dp"
             app:layout_constraintBottom_toTopOf="@+id/navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cardView"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="8dp">
 
         </android.support.v7.widget.RecyclerView>
 
@@ -208,17 +211,13 @@
             android:id="@+id/empty_image"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="64dp"
             android:background="@color/colorBG"
             android:paddingEnd="32dp"
             android:paddingLeft="32dp"
             android:paddingRight="32dp"
             android:paddingStart="32dp"
             android:paddingTop="32dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/navigation"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/members_list"
@@ -230,17 +229,17 @@
             android:id="@+id/empty_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="32dp"
             android:fontFamily="@font/advent_pro"
             android:gravity="end"
             android:text="Looks like You have not added anything yet"
-            android:textAlignment="viewEnd"
+            android:textAlignment="center"
             android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="@+id/empty_image"
-            app:layout_constraintEnd_toStartOf="@+id/fab_daily_bazar"
-            app:layout_constraintStart_toStartOf="@+id/empty_image" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/empty_image"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

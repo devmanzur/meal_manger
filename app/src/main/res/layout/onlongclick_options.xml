@@ -64,6 +64,10 @@
         android:id="@+id/long_options_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -75,11 +79,10 @@
             android:id="@+id/linearLayout_user_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:padding="8dp">
+            android:orientation="horizontal">
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_edit_user"
@@ -108,11 +111,10 @@
             android:id="@+id/linearLayout_user_delete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:padding="8dp">
+            android:orientation="horizontal">
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_user_delete"
@@ -141,15 +143,15 @@
                 app:layout_constraintStart_toEndOf="@+id/fab_user_delete"
                 app:layout_constraintTop_toTopOf="@+id/fab_user_delete" />
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/linearLayout_user_share"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:padding="8dp">
+            android:orientation="horizontal">
 
             <android.support.design.widget.FloatingActionButton
                 android:layout_width="wrap_content"
